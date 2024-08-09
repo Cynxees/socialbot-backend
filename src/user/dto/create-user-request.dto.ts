@@ -1,9 +1,12 @@
 import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsValidUsername } from "../validators/username.validator";
+import { ValidatorEnum } from "src/infrastructure/config/enums/common.enums";
 
 export class CreateUserRequestDto {
 
   @IsString()
   @IsNotEmpty()
+  @IsValidUsername(ValidatorEnum.UNIQUE)
   username: string;
   
   @IsString()
@@ -16,6 +19,6 @@ export class CreateUserRequestDto {
   
   @IsString()
   @IsOptional()
-  display_name?: string;
+  displayName?: string;
 
 }

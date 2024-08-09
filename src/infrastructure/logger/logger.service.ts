@@ -34,12 +34,12 @@ export class CustomLoggerService implements LoggerService {
     }
   }
 
-  private getCallerInfo(): { className: string; methodName: string } {
+  private getCallerInfo(step: number = 3): { className: string; methodName: string } {
     const stack = new Error().stack;
     if (!stack) return { className: '', methodName: '' };
 
     const stackLines = stack.split('\n');
-    const callerLine = stackLines[3];
+    const callerLine = stackLines[step];
 
     const match = RegExp(/at (\w+)\.(\w+)/).exec(callerLine);
     if (match) {
@@ -76,5 +76,15 @@ export class CustomLoggerService implements LoggerService {
   debug(message: any, ...optionalParams: any[]) {
     const { className, methodName } = this.getCallerInfo();
     console.log(`${this.colors.fg.blue}[${className}.${methodName}] ${this.colorTag(this.colors.fg.grey, 'DEBUG')} ${message}`, ...optionalParams, this.colors.reset);
+  }
+
+  start(){
+    const { className, methodName } = this.getCallerInfo();
+    console.log(`${this.colors.fg.blue}[${className}.${methodName}] ${this.colorTag(this.colors.fg.cyan, 'LOG')} start`, this.colors.reset);
+  }
+
+  done() {
+    const { className, methodName } = this.getCallerInfo();
+    console.log(`${this.colors.fg.blue}[${className}.${methodName}] ${this.colorTag(this.colors.fg.cyan, 'LOG')} done`, this.colors.reset);
   }
 }
