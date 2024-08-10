@@ -3,6 +3,8 @@ import { Injectable, LoggerService } from '@nestjs/common';
 @Injectable()
 export class CustomLoggerService implements LoggerService {
 
+  private timers: { [key: string]: number } = {};
+
   colors = {
     reset: '\x1b[0m',
     bright: '\x1b[1m',
@@ -86,5 +88,26 @@ export class CustomLoggerService implements LoggerService {
   done() {
     const { className, methodName } = this.getCallerInfo();
     console.log(`${this.colors.fg.blue}[${className}.${methodName}] ${this.colorTag(this.colors.fg.cyan, 'LOG')} done`, this.colors.reset);
+  }
+
+  timeStart(label: string){
+    this.timers[label] = Date.now()
+  }
+
+  timeEnd(label: string, log?: string){
+    const endTime = Date.now();
+    const startTime = this.timers[label];
+
+    if(!startTime) {
+      this.log(`Timer with label '${label}' does not exist.`);
+      return;
+    }
+
+    const duration = endTime - startTime;
+    delete this.timers[label];
+
+    const message = log ? `${log} - Completed in ${duration}ms` : `Completed in ${duration}ms`;
+    this.log(message);
+
   }
 }

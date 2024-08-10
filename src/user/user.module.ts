@@ -5,9 +5,10 @@ import { PrismaModule } from 'src/infrastructure/prisma/prisma.module';
 import { LoggerModule } from 'src/infrastructure/logger/logger.module';
 import { UserRepository } from './repositories/user.repository';
 import { UserValidationConstraint } from './validators/username.validator';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [PrismaModule, LoggerModule],
+  imports: [PrismaModule, LoggerModule, ConfigModule],
   controllers: [UserController],
   providers: [UserService, UserRepository, UserValidationConstraint],
   exports: [UserService]

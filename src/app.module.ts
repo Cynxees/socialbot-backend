@@ -5,10 +5,12 @@ import { InfrastructureModule } from './infrastructure/infrastructure.module';
 import { UserModule } from './user/user.module';
 import { PostModule } from './post/post.module';
 import { CommonModule } from './common/common.module';
-import { ConfigModule } from './infrastructure/config/config.module';
+import { ConfigModule } from '@nestjs/config'; 
 
 @Module({
-  imports: [InfrastructureModule, UserModule, PostModule, CommonModule, ConfigModule],
+  imports: [InfrastructureModule, UserModule, PostModule, CommonModule, ConfigModule.forRoot({
+    envFilePath: '.env'
+  })],
   controllers: [AppController],
   providers: [AppService],
 })

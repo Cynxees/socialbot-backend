@@ -1,6 +1,6 @@
 import { Transform } from "class-transformer";
 import { IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
-import { SortOrderEnum } from "src/infrastructure/config/enums/common.enums";
+import { SortOrderEnum } from "src/common/enums/common.enums";
 
 /**
  * MUST ADD: 

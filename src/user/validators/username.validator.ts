@@ -6,7 +6,7 @@ import {
   ValidationOptions,
   registerDecorator,
 } from 'class-validator';
-import { ValidatorEnum } from 'src/infrastructure/config/enums/common.enums';
+import { ValidatorEnum } from 'src/common/enums/common.enums';
 import { UserService } from '../user.service';
 import { CustomLoggerService } from 'src/infrastructure/logger/logger.service';
 

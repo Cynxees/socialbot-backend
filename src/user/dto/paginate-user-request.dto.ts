@@ -1,6 +1,6 @@
 import { IsEnum, IsOptional } from "class-validator";
 import { PaginateRequestDto } from "src/common/dto/paginate-request.dto"
-import { UserFilterEnum, UserSortEnum } from 'src/infrastructure/config/enums/user.enums'
+import { UserFilterEnum, UserSortEnum } from 'src/common/enums/user.enums'
 
 export class PaginateUserRequestDto extends PaginateRequestDto{
   

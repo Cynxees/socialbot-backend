@@ -3,11 +3,12 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { AuthService } from './auth.service';
 import { LoginRequestDto } from './dto/login-request.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CustomLoggerService } from '../logger/logger.service';
 
 @Controller('auth')
 @ApiTags('Auth')
+@ApiBearerAuth()
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
@@ -23,9 +24,9 @@ export class AuthController {
     return res;
   }
 
-  // @UseGuards(JwtAuthGuard)
-  // @Get('profile')
-  // getProfile(@Request() req) {
-  //   return req.user;
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
+  }
 }
