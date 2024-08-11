@@ -1,7 +1,7 @@
 import { ArgumentMetadata, Injectable, PipeTransform} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt'
-import { CustomLoggerService } from 'src/infrastructure/logger/logger.service';
+import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
 
 @Injectable()
 export class PasswordHasherPipe implements PipeTransform {

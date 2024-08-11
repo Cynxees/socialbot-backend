@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserRequestDto } from './dto/create-user-request.dto';
 import { UserResponseDto } from './dto/user-response.dto';
-import { CustomLoggerService } from 'src/infrastructure/logger/logger.service';
+import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
 import { UserRepository } from './repositories/user.repository';
 import { PaginateUserRequestDto } from './dto/paginate-user-request.dto';
 import { User } from '@prisma/client';

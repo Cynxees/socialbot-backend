@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "src/infrastructure/prisma/prisma.service";
+import { PrismaService } from "src/_infrastructure/prisma/prisma.service";
 import { CreateUserRequestDto } from "../dto/create-user-request.dto";
-import { CustomLoggerService } from "src/infrastructure/logger/logger.service";
+import { CustomLoggerService } from "src/_infrastructure/logger/logger.service";
 import { PaginateUserRequestDto } from "../dto/paginate-user-request.dto";
 import { UserResponseDto } from "../dto/user-response.dto";
 import { User } from "@prisma/client";

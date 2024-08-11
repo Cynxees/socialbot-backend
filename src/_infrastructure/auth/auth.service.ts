@@ -4,10 +4,8 @@ import { JwtService } from '@nestjs/jwt';
 import { LoginRequestDto } from './dto/login-request.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { CustomLoggerService } from '../logger/logger.service';
-import { ConfigService } from '@nestjs/config';
 import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
-import { timeLog } from 'console';
 
 @Injectable()
 export class AuthService {

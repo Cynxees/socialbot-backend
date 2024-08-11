@@ -1,7 +1,7 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { CustomLoggerService } from './infrastructure/logger/logger.service';
+import { CustomLoggerService } from './_infrastructure/logger/logger.service';
 import { ClassSerializerInterceptor, UnprocessableEntityException, ValidationPipe } from '@nestjs/common';
 import { useContainer } from 'class-validator';
 
