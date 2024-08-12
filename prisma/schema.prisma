@@ -32,3 +32,7 @@ model Post {
   author    User?    @relation(fields: [authorId], references: [id])
   authorId  Int?
 }
+
+model Test {
+  id Int @default(autoincrement()) @id
+}
