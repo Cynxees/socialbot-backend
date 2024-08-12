@@ -27,8 +27,20 @@ model User {
 model Post {
   id        Int      @default(autoincrement()) @id
   title     String
-  content   String?
+  caption   String?
+  url       String
+  media_type MediaType @default(image)
+  location String?
+  music    String?
   published Boolean? @default(false)
+  date      String
+  tags      String?
+  hastags   String?
   author    User?    @relation(fields: [authorId], references: [id])
   authorId  Int?
+}
+enum MediaType {
+  image
+  video
+  both
 }

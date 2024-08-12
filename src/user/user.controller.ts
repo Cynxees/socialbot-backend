@@ -46,7 +46,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  @Auth(Permissions.USER_DELETE)
+  // @Auth(Permissions.USER_DELETE)
   async delete(@Param('id') id: number) {
     this.logger.start()
     const res = await this.userService.deleteById(+id);
@@ -55,7 +55,7 @@ export class UserController {
   }
 
   @Put(':id')
-  @Auth(Permissions.USER_UPDATE)
+  // @Auth(Permissions.USER_UPDATE)
   async update(@Param('id') id: number, @Body(PasswordHasherPipe) req : UpdateUserRequestDto) : Promise<UserResponseDto> {
     this.logger.start()
     const res = await this.userService.update(+id, req);
