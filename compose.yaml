@@ -31,7 +31,7 @@ services:
       - backend-network
     command: >
       /bin/sh -c "
-      npm run db:deploy;
+      npm run db:migration:deploy;
       npm run start:dev;
       "
   docs: 
