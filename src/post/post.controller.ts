@@ -50,7 +50,7 @@ export class PostController {
   // @Auth(Permissions.POST_DELETE) 
   async delete(@Param('id') id: number) {
     this.logger.start();
-    const res = await this.postsService.deleteById(id);
+    await this.postsService.deleteById(id);
     this.logger.done();
   }
 
