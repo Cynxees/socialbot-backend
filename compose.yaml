@@ -35,22 +35,22 @@ services:
       npm run db:migration:deploy;
       npm run start:dev;
       "
-  docs: 
-    build: 
-      context: . 
-    container_name: doc
-    ports: 
-      - '8080:8080' 
-    depends_on: 
-      - app
-    volumes:
-        - ./src:/app/src 
-    networks:
-      - backend-network
-    command: >
-      /bin/sh -c "
-      npx @compodoc/compodoc -p tsconfig.json -s
-      "
+  # docs: 
+  #   build: 
+  #     context: . 
+  #   container_name: doc
+  #   ports: 
+  #     - '8080:8080' 
+  #   depends_on: 
+  #     - app
+  #   volumes:
+  #       - ./src:/app/src 
+  #   networks:
+  #     - backend-network
+  #   command: >
+  #     /bin/sh -c "
+  #     npx @compodoc/compodoc -p tsconfig.json -s
+  #     "
 
   pgadmin:
     image: dpage/pgadmin4 
