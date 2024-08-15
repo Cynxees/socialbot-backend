@@ -26,7 +26,7 @@ async function main() {
         published: true,
         date: '2024-08-12',
         tags: 'image, published',
-        hastags: '#image, #published',
+        hashtags: ['#image, #published'],
         authorId: 1, // Assuming user with ID 1 exists
       },
       // Image Only, Unpublished
@@ -40,7 +40,7 @@ async function main() {
         published: false,
         date: '2024-08-13',
         tags: 'image, unpublished',
-        hastags: '#image, #unpublished',
+        hashtags: ['#image, #unpublished'],
         authorId: 2, // Assuming user with ID 2 exists
       },
       // Video Only, Published
@@ -54,7 +54,7 @@ async function main() {
         published: true,
         date: '2024-08-14',
         tags: 'video, published',
-        hastags: '#video, #published',
+        hashtags: ['#video, #published'],
         authorId: 1,
       },
       // Video Only, Unpublished
@@ -68,7 +68,7 @@ async function main() {
         published: false,
         date: '2024-08-15',
         tags: 'video, unpublished',
-        hastags: '#video, #unpublished',
+        hashtags: ['#video, #unpublished'],
         authorId: 2,
       },
       // Both Image and Video, Published
@@ -82,7 +82,7 @@ async function main() {
         published: true,
         date: '2024-08-16',
         tags: 'both, published',
-        hastags: '#both, #published',
+        hashtags: ['#both, #published'],
         authorId: 1,
       },
       // Both Image and Video, Unpublished
@@ -96,7 +96,7 @@ async function main() {
         published: false,
         date: '2024-08-17',
         tags: 'both, unpublished',
-        hastags: '#both, #unpublished',
+        hashtags: ['#both, #unpublished'],
         authorId: 2,
       },
     ],

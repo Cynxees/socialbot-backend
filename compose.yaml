@@ -33,29 +33,31 @@ services:
     command: >
       /bin/sh -c "
       npm install;
-      npm run db:deploy;
+      npm run db:migration:deploy;
       npx prisma generate;
       npm run start:dev;
       "
-  docs: 
-    build: 
-      context: . 
-    container_name: doc
-    ports: 
-      - '8080:8080' 
-    depends_on: 
-      - app
-    volumes:
-        - ./src:/app/src 
-    networks:
-      - backend-network
-    command: >
-      /bin/sh -c "
-      npx @compodoc/compodoc -p tsconfig.json -s
-      "
+  # docs: 
+  #   build: 
+  #     context: . 
+  #   container_name: doc
+  #   ports: 
+  #     - '8080:8080' 
+  #   depends_on: 
+  #     - app
+  #   volumes:
+  #       - ./src:/app/src 
+  #   networks:
+  #     - backend-network
+  #   command: >
+  #     /bin/sh -c "
+  #     npx @compodoc/compodoc -p tsconfig.json -s
+  #     "
 
   pgadmin:
     image: dpage/pgadmin4 
+    logging:
+      driver: none
     restart: always 
     container_name: pg4
     environment:

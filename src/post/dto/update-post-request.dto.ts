@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsBoolean, IsEnum } from 'class-validator';
+import { IsOptional, IsString, IsBoolean, IsEnum, IsArray } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { MediaType } from '@prisma/client'; // Import MediaType from Prisma
 
@@ -50,9 +50,10 @@ export class UpdatePostRequestDto {
   tags?: string;
 
   @ApiProperty({ description: 'Hashtags for the post', required: false })
-  @IsString()
+  @IsArray()
   @IsOptional()
-  hastags?: string;
+  @IsString({each: true})
+  hashtags?: string[] | null;
 
   @ApiProperty({ description: 'Author ID of the post', required: false })
   @IsOptional()

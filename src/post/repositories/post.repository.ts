@@ -45,7 +45,7 @@ export class PostRepository {
         published: true,
         date: true,
         tags: true,
-        hastags: true,
+        hashtags: true,
         authorId: true,
       },
     });

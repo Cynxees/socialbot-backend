@@ -12,7 +12,7 @@ export class PostResponseDto implements Partial<Post> {
   published?: boolean;
   date: string;
   tags?: string;
-  hastags?: string;
+  hashtags?: string[];
   authorId?: number;
   
 
@@ -27,7 +27,7 @@ export class PostResponseDto implements Partial<Post> {
     this.published = post.published;
     this.date = post.date;
     this.tags = post.tags;
-    this.hastags = post.hastags;
+    this.hashtags = post.hashtags;
     this.authorId = post.authorId;
   }
 }

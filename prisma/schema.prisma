@@ -35,7 +35,7 @@ model Post {
   published Boolean? @default(false)
   date      String
   tags      String?
-  hastags   String?
+  hashtags   String[] @default([])
   author    User?    @relation(fields: [authorId], references: [id])
   authorId  Int?
 }
