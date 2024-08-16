@@ -5,6 +5,10 @@ import {
   ValidationArguments,
   ValidationOptions,
   registerDecorator,
+  IsArray,
+  IsOptional,
+  IsString,
+  ArrayNotEmpty,
 } from 'class-validator';
 import { ValidatorEnum } from 'src/common/enums/common.enums';
 import { PostService } from '../post.service';
@@ -40,4 +44,28 @@ export class PostValidationConstraint implements ValidatorConstraintInterface {
     }
     return `Invalid ${args.property}.`;
   }
+}
+
+// Tag Validator for ensuring tags start with '@'
+@ValidatorConstraint({ name: 'IsValidTag', async: false })
+export class IsValidTagConstraint implements ValidatorConstraintInterface {
+  validate(tag: string, args: ValidationArguments): boolean {
+    // Ensure the tag starts with '@'
+    return typeof tag === 'string' && tag.startsWith('@');
+  }
+
+  defaultMessage(args: ValidationArguments): string {
+    return `Tag ${args.value} must start with '@'.`;
+  }
+}
+
+export function IsValidTag(validationOptions?: ValidationOptions) {
+  return function (object: Object, propertyName: string) {
+    registerDecorator({
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      validator: IsValidTagConstraint,
+    });
+  };
 }

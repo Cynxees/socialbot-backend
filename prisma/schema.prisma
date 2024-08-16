@@ -28,13 +28,13 @@ model Post {
   id        Int      @default(autoincrement()) @id
   title     String
   caption   String?
-  url       String
+  url       String[] @default([])
   media_type MediaType @default(image)
   location String?
   music    String?
   published Boolean? @default(false)
   date      String
-  tags      String?
+  tags      String[] @default([])
   hashtags   String[] @default([])
   author    User?    @relation(fields: [authorId], references: [id])
   authorId  Int?

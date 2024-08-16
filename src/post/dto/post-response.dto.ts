@@ -5,13 +5,13 @@ export class PostResponseDto implements Partial<Post> {
   id: number;
   title: string;
   caption?: string;
-  url: string;
+  url: string[];
   media_type: 'image' | 'video' | 'both';
   location?: string;
   music?: string;
   published?: boolean;
   date: string;
-  tags?: string;
+  tags?: string[];
   hashtags?: string[];
   authorId?: number;
   
