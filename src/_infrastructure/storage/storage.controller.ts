@@ -3,8 +3,6 @@ import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { StorageService } from './storage.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CustomLoggerService } from '../logger/logger.service';
-import { CreateFileRequestDto } from './dto/create-file-request.dto';
-import { File } from 'buffer';
 
 @Controller('storage')
 @ApiTags('Storage')
@@ -33,7 +31,7 @@ export class StorageController {
     this.logger.start();
     
     const key = `${Date.now()}-${file.originalname}`;
-    const result = await this.storageService.uploadFile(key, file.buffer);
+    await this.storageService.uploadFile(key, file.buffer);
 
     this.logger.done();
     return 'success'

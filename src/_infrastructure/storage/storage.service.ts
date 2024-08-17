@@ -2,13 +2,13 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CustomLoggerService } from '../logger/logger.service';
+import { ConfigSchema } from 'src/config/config.schema';
 
 
 @Injectable()
 export class StorageService {
 
   private s3Client: S3Client;
-  private s3BucketArn: string;
   private s3BucketName: string;
 
   constructor(
@@ -16,23 +16,23 @@ export class StorageService {
     private readonly logger: CustomLoggerService
   ){
     this.s3Client = new S3Client({
-      region: this.configService.getOrThrow<string>('AWS_REGION'),
+      region: this.configService.getOrThrow<ConfigSchema['AWS']>('AWS').AWS_REGION,
       credentials: {
-        accessKeyId: this.configService.getOrThrow<string>('AWS_ACCESS_KEY_ID'),
-        secretAccessKey: this.configService.getOrThrow<string>('AWS_SECRET_ACCESS_KEY'),
+        accessKeyId: this.configService.getOrThrow<ConfigSchema['AWS']>('AWS').AWS_ACCESS_KEY_ID,
+        secretAccessKey: this.configService.getOrThrow<ConfigSchema['AWS']>('AWS').AWS_SECRET_ACCESS_KEY,
       },
     });
-    this.s3BucketArn = this.configService.getOrThrow<string>('AWS_S3_BUCKET_ARN');
-    this.s3BucketName = this.configService.getOrThrow<string>('AWS_S3_BUCKET_NAME');
+    this.s3BucketName = this.configService.getOrThrow<ConfigSchema['AWS']>('AWS').AWS_S3_BUCKET_NAME;
   }
 
-  async uploadFile(key: string, body: Buffer | Uint8Array | Blob | string) {
+  async uploadFile(key: string, fileBuffer: Buffer) {
     this.logger.start()
     this.logger.log(`creating put command for ${key} `)
     const command = new PutObjectCommand({
       Bucket: this.s3BucketName,
       Key: `post/${key}`,
-      Body: body,
+      Body: fileBuffer,
+      StorageClass: 'ONEZONE_IA'
     });
 
     this.logger.log('sending file')
