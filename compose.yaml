@@ -26,7 +26,8 @@ services:
     depends_on: 
       - db 
     volumes:
-        - .:/app 
+        - .:/usr/src/app 
+        - ./node_modules:/usr/src/app/node_modules
     networks:
       - backend-network
     command: >
