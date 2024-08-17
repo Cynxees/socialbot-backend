@@ -11,6 +11,9 @@ export class SecretSchema {
 
   @IsNumber()
   HASH_ROUNDS: number;
+
+  @IsString()
+  HASH_SALT: string;
 }
 
 export class MetaSchema {
