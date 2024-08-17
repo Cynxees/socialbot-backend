@@ -44,3 +44,8 @@ enum MediaType {
   video
   both
 }
+
+model File {
+  id  Int @default(autoincrement()) @id
+  url String
+}

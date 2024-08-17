@@ -26,7 +26,8 @@ services:
     depends_on: 
       - db 
     volumes:
-        - .:/app 
+        - .:/usr/src/app 
+        - ./node_modules:/usr/src/app/node_modules
     networks:
       - backend-network
     command: >
@@ -52,15 +53,15 @@ services:
   #     npx @compodoc/compodoc -p tsconfig.json -s
   #     "
 
-  pgadmin:
-    image: dpage/pgadmin4 
-    restart: always 
-    container_name: pg4
+  dbeaver:
+    image: dbeaver/cloudbeaver
+    # restart: always 
+    container_name: bvr
     environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@admin.com 
-      - PGADMIN_DEFAULT_PASSWORD=pgadmin4 
+      - CB_ADMIN_NAME=dbeaver
+      - CB_ADMIN_PASSWORD=Dbeaver1
     ports: 
-      - '5050:80' 
+      - '5050:8978' 
     depends_on: 
         - db
     networks:
