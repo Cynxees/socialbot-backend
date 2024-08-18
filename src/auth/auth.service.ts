@@ -1,23 +1,22 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserService } from 'src/user/user.service'; 
 import { JwtService } from '@nestjs/jwt';
 import { LoginRequestDto } from './dto/login-request.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
-import { CustomLoggerService } from '../logger/logger.service';
+import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service'; 
 import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
-
+import { AuthUserService } from './auth-user/auth-user.service';
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UserService,
+    private userService: AuthUserService,
     private jwtService: JwtService,
     private readonly logger: CustomLoggerService,
   ) {}
 
   async validateUser(username: string, password: string): Promise<User> {
     this.logger.start();
-    const user = await this.userService.findOne('username', username);
+    const user = await this.userService.findOneByUsername(username);
 
     if (user && await bcrypt.compare(password, user.password)) {
       this.logger.done();
@@ -35,13 +34,13 @@ export class AuthService {
     this.logger.log('validating user');
     const user = await this.validateUser(req.username, req.password);
 
-    const payload = {userId: user.id, username: user.username, role: user.role};
+    const payload = {id: user.id, username: user.username, role: user.role} as JwtUser;
 
     const accessToken = this.jwtService.sign(payload);
     this.logger.debug(accessToken);
 
     const res = this.jwtService.decode(accessToken);
-    this.logger.debug(res);
+    this.logger.debug(JSON.stringify(res));
 
     this.logger.done();
     return {accessToken};

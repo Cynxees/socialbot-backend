@@ -1,12 +1,12 @@
 import { SetMetadata, UseGuards, applyDecorators } from '@nestjs/common';
-import { Permissions } from 'src/common/enums/auth.enums';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard'; 
 import { PermissionsGuard } from '../guards/permissions.guard'; 
+import { Action, AppSubjects } from 'src/config/permissions.schema';
 
-export const PERMISSIONS_KEY = 'permissions';
-export const Auth = (...permissions: Permissions[]) => {
+export const ACTIONS_KEY = 'actions';
+export const Auth = (...actions: { action: Action; subject: AppSubjects, field?: string }[]) => {
   return applyDecorators(
-    SetMetadata(PERMISSIONS_KEY, permissions),
+    SetMetadata(ACTIONS_KEY, actions),
     UseGuards(JwtAuthGuard, PermissionsGuard),
   );
 };

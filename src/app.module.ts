@@ -7,9 +7,10 @@ import { PostModule } from './post/post.module';
 import { CommonModule } from './common/common.module';
 import { CustomConfigModule } from './config/config.module';
 import { FileModule } from './file/file.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [InfrastructureModule, UserModule, PostModule, CommonModule, CustomConfigModule, FileModule],
+  imports: [InfrastructureModule, CustomConfigModule, CommonModule, UserModule, PostModule, FileModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

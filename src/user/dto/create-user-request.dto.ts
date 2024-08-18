@@ -1,7 +1,6 @@
 import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { IsValidUsername } from "../validators/username.validator";
 import { ValidatorEnum } from "src/common/enums/common.enums";
-import { Transform } from "class-transformer";
 
 export class CreateUserRequestDto {
 

@@ -12,6 +12,7 @@ async function bootstrap() {
     }
   )
   
+  // app.useGlobalInterceptors(new CurrentUserInterceptor(app.get(Reflector)))
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
   app.useGlobalPipes(new ValidationPipe({ 
     transform: true, 
