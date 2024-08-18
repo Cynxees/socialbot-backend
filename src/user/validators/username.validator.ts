@@ -7,15 +7,15 @@ import {
   registerDecorator,
 } from 'class-validator';
 import { ValidatorEnum } from 'src/common/enums/common.enums';
-import { UserService } from '../user.service';
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
+import { UserService } from '../user.service';
 
 @Injectable()
 @ValidatorConstraint({ async: true })
 export class UserValidationConstraint implements ValidatorConstraintInterface {
   constructor(
-    private readonly userService: UserService,
     private readonly logger: CustomLoggerService,
+    private readonly userService: UserService,
   ) {}
 
   async validate(value: string, args: ValidationArguments): Promise<boolean> {

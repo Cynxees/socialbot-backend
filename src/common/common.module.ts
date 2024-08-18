@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
-import { FacebookModule } from './social/facebook/facebook.module';
-import { InstagramModule } from './social/instagram/instagram.module';
 import { SocialModule } from './social/social.module';
+import { CaslModule } from './casl/casl.module';
 
 @Module({
-  imports: [SocialModule]
+  imports: [SocialModule, CaslModule]
 })
 export class CommonModule {}
