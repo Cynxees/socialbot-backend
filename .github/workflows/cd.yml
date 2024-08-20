@@ -22,6 +22,9 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set default.region ${{ secrets.AWS_REGION }}
           aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
+      
+      - name: Rename .env.example to .env
+        run: mv .env.example .env
 
       - name: Build Docker image
         run: |
