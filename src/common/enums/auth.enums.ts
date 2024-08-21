@@ -1,6 +1,6 @@
 export type RolePermissionsType = {
   [key in Role]: {
-    [key in Permissions]?: boolean;
+    [key in Permission]?: boolean;
   };
 };
 
@@ -9,7 +9,7 @@ export enum Role {
   SUPER_ADMIN = 'Super Admin',
 }
 
-export enum Permissions {
+export enum Permission {
 
   USER_CREATE = 'user:create',
   USER_READ = 'user:read',
@@ -20,12 +20,12 @@ export enum Permissions {
 
 export const RolePermissions : RolePermissionsType = {
   [Role.USER]: {
-    [Permissions.USER_READ]: true,
+    [Permission.USER_READ]: true,
   },
   [Role.SUPER_ADMIN]: {
-    [Permissions.USER_CREATE]: true,
-    [Permissions.USER_READ]: true,
-    [Permissions.USER_UPDATE]: true,
-    [Permissions.USER_DELETE]: true,
+    [Permission.USER_CREATE]: true,
+    [Permission.USER_READ]: true,
+    [Permission.USER_UPDATE]: true,
+    [Permission.USER_DELETE]: true,
   },
 };

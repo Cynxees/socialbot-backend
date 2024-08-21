@@ -13,59 +13,59 @@ export class UserService {
     private readonly userRepository: UserRepository,
     private readonly logger: CustomLoggerService
   ) {}
-  async create(data: CreateUserRequestDto) : Promise<UserResponseDto> {
+  async create(data: CreateUserRequestDto, currentUser?: JwtUser) : Promise<UserResponseDto> {
     this.logger.start()
-    const user = await this.userRepository.createUser({data});
+    const user = await this.userRepository.createUser({data}, currentUser);
     
     this.logger.done();
     return user;
   }
 
-  async paginate(params: PaginateUserRequestDto): Promise<UserResponseDto[]> {
+  async paginate(params: PaginateUserRequestDto, user?: JwtUser): Promise<UserResponseDto[]> {
     this.logger.start()
 
-    const res = await this.userRepository.paginateUser(params);
+    const res = await this.userRepository.paginateUser(params, user);
     
     this.logger.done();
     return res;
   }
 
-  async findOne(field: keyof User, value: any){
+  async findOne(field: keyof User, value: any, currentUser?: JwtUser){
     this.logger.start()
-    const user = this.userRepository.findOne(field, value);
+    const user = this.userRepository.findOne(field, value, currentUser);
     this.logger.done();
     return user;
   }
 
-  async findByIdOrThrow(id: number): Promise<User>{
+  async findByIdOrThrow(id: number, currentUser?: JwtUser): Promise<User>{
     this.logger.start()
 
-    const user = await this.findOne('id', id);
+    const user = await this.findOne('id', id, currentUser);
     if(!user) throw new NotFoundException('User not found');
 
     this.logger.done();
     return user;
   }
 
-  async deleteById(id: number): Promise<void> {
+  async deleteById(id: number, currentUser?: JwtUser): Promise<void> {
     this.logger.start()
 
     this.logger.log('finding user');
     await this.findByIdOrThrow(id);
 
     this.logger.log('deleting user');
-    await this.userRepository.deleteById(id);
+    await this.userRepository.deleteById(id, currentUser);
     this.logger.done();
   }
 
-  async update(id: number, req: UpdateUserRequestDto ): Promise<UserResponseDto> {
+  async update(id: number, req: UpdateUserRequestDto, currentUser?: JwtUser ): Promise<UserResponseDto> {
     this.logger.start()
     
     this.logger.log('finding user');
     await this.findByIdOrThrow(id);
 
     this.logger.log('updating user');
-    const user = await this.userRepository.update(id, req);
+    const user = await this.userRepository.update(id, req, currentUser);
 
     this.logger.done();
     return user;

@@ -6,9 +6,10 @@ import { PaginateUserRequestDto } from './dto/paginate-user-request.dto';
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
 import { UserResponseDto } from './dto/user-response.dto';
 import { UpdateUserRequestDto } from './dto/update-user-request.dto';
-import { Auth } from 'src/_infrastructure/auth/decorators/auth.decorator';
-import { Permissions } from 'src/common/enums/auth.enums';
+import { Auth } from 'src/auth/decorators/auth.decorator';
 import { PasswordHasherPipe } from './pipes/password-hasher.pipe';
+import { Action } from 'src/config/permissions.schema';
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 
 @ApiTags('User')
 @Controller('user')
@@ -20,45 +21,45 @@ export class UserController {
   ) {}
 
   @Post()
-  // @Auth(Permissions.USER_CREATE)
-  async create(@Body(PasswordHasherPipe) req: CreateUserRequestDto) {
+  @Auth({action: Action.Create, subject: 'User'})
+  async create(@Body(PasswordHasherPipe) req: CreateUserRequestDto, @CurrentUser() user: JwtUser) {
     this.logger.start()
-    const res = await this.userService.create(req);
+    const res = await this.userService.create(req, user);
     this.logger.done();
     return res;
   }
   @Get()
-  // @Auth(Permissions.USER_READ)
-  async paginate(@Query() params: PaginateUserRequestDto) {
+  @Auth({action: Action.Read, subject: 'User'})
+  async paginate(@Query() params: PaginateUserRequestDto, @CurrentUser() user: JwtUser) {
     this.logger.start()
-    const res = await this.userService.paginate(params);
+    const res = await this.userService.paginate(params, user);
     this.logger.done();
     return res;
   }
 
   @Get(':id')       
-  // @Auth(Permissions.USER_READ)
-  async findById(@Param('id') id: number) {
+  @Auth({action: Action.Read, subject: 'User'})
+  async findById(@Param('id') id: number, @CurrentUser() user: JwtUser) {
     this.logger.start()
-    const res = await this.userService.findByIdOrThrow(+id);
+    const res = await this.userService.findByIdOrThrow(+id, user);
     this.logger.done();
     return res;
   }
 
   @Delete(':id')
-  // @Auth(Permissions.USER_DELETE)
-  async delete(@Param('id') id: number) {
+  @Auth({action: Action.Delete, subject: 'User'})
+  async delete(@Param('id') id: number, @CurrentUser() user: JwtUser) {
     this.logger.start()
-    const res = await this.userService.deleteById(+id);
+    const res = await this.userService.deleteById(+id, user);
     this.logger.done();
     return res;
   }
 
   @Put(':id')
-  // @Auth(Permissions.USER_UPDATE)
-  async update(@Param('id') id: number, @Body(PasswordHasherPipe) req : UpdateUserRequestDto) : Promise<UserResponseDto> {
+  @Auth({action: Action.Update, subject: 'User'})
+  async update(@Param('id') id: number, @Body(PasswordHasherPipe) req : UpdateUserRequestDto, @CurrentUser() user: JwtUser) : Promise<UserResponseDto> {
     this.logger.start()
-    const res = await this.userService.update(+id, req);
+    const res = await this.userService.update(+id, req, user);
     this.logger.done();
     return res;
   }
