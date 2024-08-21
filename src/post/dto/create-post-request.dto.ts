@@ -1,7 +1,8 @@
-import { IsNotEmpty, IsOptional, IsString, IsBoolean, IsEnum, IsArray } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsBoolean, IsEnum, IsArray, IsDate } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsValidTag } from '../validators/post.validators';
 import { MediaType } from '@prisma/client'; // Import MediaType from Prisma
+import { Transform } from 'class-transformer';
 
 export class CreatePostRequestDto {
   
@@ -23,7 +24,7 @@ export class CreatePostRequestDto {
 
   @ApiProperty({ description: 'Type of media', enum: ['image', 'video', 'both'] })
   @IsEnum(MediaType)
-  media_type: MediaType;
+  mediaType: MediaType;
 
   @ApiProperty({ description: 'Location of the post', required: false })
   @IsString()
@@ -40,10 +41,12 @@ export class CreatePostRequestDto {
   @IsOptional()
   published?: boolean;
 
+  @Transform(({ value}) => new Date(value))
   @ApiProperty({ description: 'Date of the post' })
-  @IsString()
+  @IsDate()
   @IsNotEmpty()
-  date: string;
+  scheduledDate: Date;
+
 
   @ApiProperty({ description: 'Tags for the post', required: false })
   @IsArray()

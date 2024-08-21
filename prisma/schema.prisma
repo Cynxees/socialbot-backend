@@ -25,20 +25,28 @@ model User {
 }
 
 model Post {
-  id        Int      @default(autoincrement()) @id
-  title     String
-  caption   String?
-  url       String[] @default([])
-  media_type MediaType @default(image)
-  location String?
-  music    String?
-  published Boolean? @default(false)
-  date      String
+  id                 Int      @default(autoincrement()) @id
+  title              String
+  caption            String?
+  url                String[] @default([])
+  mediaType          MediaType @default(image)
+  location           String?
+  music              String?
+  published          Boolean? @default(false)
+  scheduledDate      DateTime?
   tags      String[] @default([])
   hashtags   String[] @default([])
   author    User?    @relation(fields: [authorId], references: [id])
   authorId  Int?
+  
+  @@index([scheduledDate])     
+  @@index([title])     
+  @@index([authorId])  
+
+ 
+  @@index([scheduledDate , authorId]) 
 }
+
 enum MediaType {
   image
   video
