@@ -4,13 +4,13 @@ import { SortOrderEnum } from "src/common/enums/common.enums";
 
 /**
  * MUST ADD: 
-  @IsEnum(UserSortEnum)
-  @IsOptional
-  orderBy: UserSortEnum = UserSortEnum.ID;
-  
-  @IsEnum(UserFilterEnum)
-  @IsOptional
-  filterBy?: UserFilterEnum;
+ * @IsEnum(UserSortEnum)
+ * @IsOptional()
+ * orderBy: UserSortEnum = UserSortEnum.ID;
+ * 
+ * @IsEnum(UserFilterEnum)
+ * @IsOptional()
+ * filterBy?: UserFilterEnum;
  */
 export class PaginateRequestDto {
   
@@ -39,4 +39,17 @@ export class PaginateRequestDto {
   @IsNumber()
   @IsOptional()
   take?: number;
+
+  @Transform(({ value }) => parseInt(value, 10))
+  @IsOptional()
+  @IsNumber()
+  @IsOptional()
+  page?: number = 1;  // Default page number
+
+  @Transform(({ value }) => parseInt(value, 10))
+  @IsOptional()
+  @IsNumber()
+  limit?: number = 10;  // Default limit per page
 }
+
+

@@ -21,7 +21,7 @@ export class UserController {
   ) {}
 
   @Post()
-  @Auth({action: Action.Create, subject: 'User'})
+  // @Auth({action: Action.Create, subject: 'User'})
   async create(@Body(PasswordHasherPipe) req: CreateUserRequestDto, @CurrentUser() user: JwtUser) {
     this.logger.start()
     const res = await this.userService.create(req, user);
@@ -29,7 +29,7 @@ export class UserController {
     return res;
   }
   @Get()
-  @Auth({action: Action.Read, subject: 'User'})
+  // @Auth({action: Action.Read, subject: 'User'})
   async paginate(@Query() params: PaginateUserRequestDto, @CurrentUser() user: JwtUser) {
     this.logger.start()
     const res = await this.userService.paginate(params, user);
@@ -38,7 +38,7 @@ export class UserController {
   }
 
   @Get(':id')       
-  @Auth({action: Action.Read, subject: 'User'})
+  // @Auth({action: Action.Read, subject: 'User'})
   async findById(@Param('id') id: number, @CurrentUser() user: JwtUser) {
     this.logger.start()
     const res = await this.userService.findByIdOrThrow(+id, user);
@@ -47,7 +47,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  @Auth({action: Action.Delete, subject: 'User'})
+  // @Auth({action: Action.Delete, subject: 'User'})
   async delete(@Param('id') id: number, @CurrentUser() user: JwtUser) {
     this.logger.start()
     const res = await this.userService.deleteById(+id, user);
@@ -56,7 +56,7 @@ export class UserController {
   }
 
   @Put(':id')
-  @Auth({action: Action.Update, subject: 'User'})
+  // @Auth({action: Action.Update, subject: 'User'})
   async update(@Param('id') id: number, @Body(PasswordHasherPipe) req : UpdateUserRequestDto, @CurrentUser() user: JwtUser) : Promise<UserResponseDto> {
     this.logger.start()
     const res = await this.userService.update(+id, req, user);
