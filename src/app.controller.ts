@@ -13,7 +13,7 @@ export class AppController {
   }
 
   @Get('policy')
-  getTerms(): string {
+  getPolicy(): string {
     return this.appService.getPrivacyPolicy();
   }
 
