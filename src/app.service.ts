@@ -53,6 +53,100 @@ export class AppService {
     `;
   }
 
+  getPrivacyPolicy(): string {
+
+    return `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Privacy Policy - Social Bot</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                margin: 20px;
+                padding: 20px;
+                background-color: #f4f4f4;
+                color: #333;
+            }
+            h1, h2, h3 {
+                color: #444;
+            }
+            p {
+                margin: 10px 0;
+            }
+            ul {
+                list-style-type: disc;
+                margin: 10px 0 10px 20px;
+            }
+            a {
+                color: #1a73e8;
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body>
+
+        <h1>Privacy Policy</h1>
+        <p><strong>Last Updated: 22 August 2024</strong></p>
+
+        <p>Welcome to <strong>Social Bot</strong>! We respect your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and share information about you when you use our website located at <a href="https://www.cynx.buzz/">https://www.cynx.buzz/</a> ("Website") and our service that allows you to schedule automatic uploads to social media platforms, including Instagram, YouTube, Facebook, and TikTok ("Service").</p>
+
+        <h2>1. Information We Collect</h2>
+        <p>We collect information about you in various ways when you use our Website and Service. This includes:</p>
+        <ul>
+            <li><strong>Information You Provide:</strong> We collect information that you provide to us directly, such as when you create an account, upload content, or communicate with us. This may include your name, email address, and any other information you choose to provide.</li>
+            <li><strong>Information We Collect Automatically:</strong> When you use our Service, we may automatically collect certain information about your device and usage, including your IP address, browser type, operating system, and usage data.</li>
+            <li><strong>Information from Social Media Platforms:</strong> If you connect your social media accounts to our Service, we may collect information from those accounts, such as your profile information and any content you upload or interact with using our Service.</li>
+        </ul>
+
+        <h2>2. How We Use Your Information</h2>
+        <p>We use the information we collect to:</p>
+        <ul>
+            <li>Provide, maintain, and improve our Service;</li>
+            <li>Process transactions and send you related information, such as confirmations and invoices;</li>
+            <li>Send you technical notices, updates, security alerts, and support messages;</li>
+            <li>Respond to your comments, questions, and requests, and provide customer service;</li>
+            <li>Monitor and analyze trends, usage, and activities in connection with our Service;</li>
+            <li>Personalize your experience and provide advertisements, content, or features that match your profile and interests;</li>
+            <li>Comply with legal obligations and protect our rights and the rights of others.</li>
+        </ul>
+
+        <h2>3. Sharing Your Information</h2>
+        <p>We may share your information with third parties in the following circumstances:</p>
+        <ul>
+            <li><strong>With Your Consent:</strong> We may share your information with third parties if you have given us your consent to do so.</li>
+            <li><strong>Service Providers:</strong> We may share your information with vendors, consultants, and other service providers who need access to such information to carry out work on our behalf.</li>
+            <li><strong>Legal Requirements:</strong> We may disclose your information if we are required to do so by law or if we believe that such action is necessary to comply with legal obligations or to protect the security or integrity of our Service.</li>
+            <li><strong>Business Transfers:</strong> In the event of a merger, acquisition, or sale of all or a portion of our assets, your information may be transferred as part of that transaction.</li>
+        </ul>
+
+        <h2>4. Security of Your Information</h2>
+        <p>We take reasonable measures to protect the information we collect from or about you from unauthorized access, use, or disclosure. However, no method of transmission over the internet or method of electronic storage is completely secure, so we cannot guarantee its absolute security.</p>
+
+        <h2>5. Your Choices</h2>
+        <p>You have certain choices regarding the information we collect and how it is used. You may update or correct your account information at any time by logging into your account. You may also opt out of receiving promotional communications from us by following the instructions in those communications.</p>
+
+        <h2>6. Children's Privacy</h2>
+        <p>Our Service is not intended for use by children under the age of 13, and we do not knowingly collect personal information from children under 13. If we learn that we have collected personal information from a child under 13, we will delete that information as quickly as possible.</p>
+
+        <h2>7. Changes to This Privacy Policy</h2>
+        <p>We may update this Privacy Policy from time to time. If we make changes, we will notify you by revising the date at the top of this policy, and in some cases, we may provide additional notice (such as adding a statement to our homepage or sending you a notification). We encourage you to review this Privacy Policy periodically to stay informed about our information practices and the ways you can help protect your privacy.</p>
+
+        <h2>8. Contact Us</h2>
+        <p>If you have any questions or concerns about this Privacy Policy, please contact us at <a href="mailto:cynxsocial@gmail.com">cynxsocial@gmail.com</a>.</p>
+
+    </body>
+    </html>
+    `
+
+  }
+
   getTerms(): string {
 
     return `
@@ -144,7 +238,6 @@ export class AppService {
 
       </body>
       </html>
-
     `
 
   }
