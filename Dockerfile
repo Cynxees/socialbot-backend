@@ -11,7 +11,6 @@ COPY . .
 
 FROM base AS build
 COPY --from=copy /usr/src/app /usr/src/app
-RUN npx prisma migrate deploy
 RUN npx prisma generate
 RUN npm run build 
 
