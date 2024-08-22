@@ -16,12 +16,6 @@ export class UpdatePostRequestDto {
   @IsOptional()
   caption?: string;
 
-  @ApiProperty({ description: 'URL of the media', required: false })
-  @IsString({each:true})
-  @IsOptional()
-  @IsArray()
-  url?: string[] | null;
-
   @ApiProperty({ description: 'Type of media', enum: ['image', 'video', 'both'], required: false })
   @IsEnum(MediaType)
   @IsOptional()
@@ -63,5 +57,5 @@ export class UpdatePostRequestDto {
 
   @ApiProperty({ description: 'Author ID of the post', required: false })
   @IsOptional()
-  authorId?: number;
+  authorId: number;
 }

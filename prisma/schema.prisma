@@ -28,7 +28,6 @@ model Post {
   id                 Int      @default(autoincrement()) @id
   title              String
   caption            String?
-  url                String[] @default([])
   mediaType          MediaType @default(image)
   location           String?
   music              String?
@@ -37,7 +36,7 @@ model Post {
   tags      String[] @default([])
   hashtags   String[] @default([])
   author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
+  authorId  Int
   
   @@index([scheduledDate])     
   @@index([title])     

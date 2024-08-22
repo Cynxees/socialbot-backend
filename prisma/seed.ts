@@ -19,7 +19,6 @@ async function main() {
       {
         title: 'Image Post Published',
         caption: 'An image-only post that is published.',
-        url: ['https://example.com/image1.jpg'], // Assuming you store only one URL per post for simplicity
         mediaType: MediaType.image,
         location: 'New York',
         music: 'Some Music',
@@ -33,7 +32,6 @@ async function main() {
       {
         title: 'Image Post Unpublished',
         caption: 'An image-only post that is not published.',
-        url: ['https://example.com/image2.jpg'],
         mediaType: MediaType.image,
         location: 'Los Angeles',
         music: 'Another Music',
@@ -47,7 +45,6 @@ async function main() {
       {
         title: 'Video Post Published',
         caption: 'A video-only post that is published.',
-        url: ['https://example.com/video1.mp4'],
         mediaType: MediaType.video,
         location: 'San Francisco',
         music: 'Video Music',
@@ -61,7 +58,6 @@ async function main() {
       {
         title: 'Video Post Unpublished',
         caption: 'A video-only post that is not published.',
-        url: ['https://example.com/video2.mp4'],
         mediaType: MediaType.video,
         location: 'Chicago',
         music: 'Another Video Music',
@@ -75,7 +71,6 @@ async function main() {
       {
         title: 'Post with Both Media Published',
         caption: 'A post with both images and videos that is published.',
-        url: ['https://example.com/image3.jpg,https://example.com/video3.mp4'], // Assuming a comma-separated URL string
         mediaType: MediaType.both,
         location: 'Seattle',
         music: 'Mixed Media Music',
@@ -89,7 +84,6 @@ async function main() {
       {
         title: 'Post with Both Media Unpublished',
         caption: 'A post with both images and videos that is not published.',
-        url: ['https://example.com/image4.jpg,https://example.com/video4.mp4'], // Assuming a comma-separated URL string
         mediaType: MediaType.both,
         location: 'Boston',
         music: 'Another Mixed Media Music',

@@ -10,7 +10,6 @@ export class PaginatePostRequestDto extends PaginateRequestDto{
   orderBy: PostSortEnum = PostSortEnum.ID;
 
   
-
   @IsEnum(PostFilterEnum)
   @IsOptional()
   filterBy?: PostFilterEnum;
