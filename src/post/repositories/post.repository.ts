@@ -25,7 +25,7 @@ export class PostRepository {
 
   async paginatePost(params: PaginatePostRequestDto): Promise<PostResponseDto[]> {
     this.logger.start();
-    const { page = 1, limit = 10, orderBy, search, scheduledDate, tags } = params;
+    const { page = 1, limit = 10, order, orderBy, search, scheduledDate, tags } = params;
 
     const skip = (page - 1) * limit;
 
@@ -36,7 +36,7 @@ export class PostRepository {
     };
 
     const orderByOption: Prisma.PostOrderByWithRelationInput = {
-      [orderBy]: 'asc'
+      [orderBy]: order
     }
 
     const posts = await this.prisma.post.findMany({

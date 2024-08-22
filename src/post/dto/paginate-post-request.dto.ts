@@ -8,7 +8,9 @@ export class PaginatePostRequestDto extends PaginateRequestDto{
   @IsEnum(PostSortEnum)
   @IsOptional()
   orderBy: PostSortEnum = PostSortEnum.ID;
+
   
+
   @IsEnum(PostFilterEnum)
   @IsOptional()
   filterBy?: PostFilterEnum;
@@ -37,4 +39,6 @@ export class PaginatePostRequestDto extends PaginateRequestDto{
   @IsInt()
   @Min(1)
   limit?: number = 10; // Default limit per page
+
+
 }
