@@ -1,6 +1,8 @@
-import { IsNotEmpty, IsOptional, IsString, IsBoolean, IsEnum } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsBoolean, IsEnum, IsArray, IsDate } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsValidTag } from '../validators/post.validators';
 import { MediaType } from '@prisma/client'; // Import MediaType from Prisma
+import { Transform } from 'class-transformer';
 
 export class CreatePostRequestDto {
   
@@ -15,13 +17,14 @@ export class CreatePostRequestDto {
   caption?: string;
 
   @ApiProperty({ description: 'URL of the media' })
-  @IsString()
+  @IsString({each:true})
   @IsNotEmpty()
-  url: string;
+  @IsArray()
+  url: string[]| null;
 
   @ApiProperty({ description: 'Type of media', enum: ['image', 'video', 'both'] })
   @IsEnum(MediaType)
-  media_type: MediaType;
+  mediaType: MediaType;
 
   @ApiProperty({ description: 'Location of the post', required: false })
   @IsString()
@@ -38,20 +41,25 @@ export class CreatePostRequestDto {
   @IsOptional()
   published?: boolean;
 
+  @Transform(({ value}) => new Date(value))
   @ApiProperty({ description: 'Date of the post' })
-  @IsString()
+  @IsDate()
   @IsNotEmpty()
-  date: string;
+  scheduledDate: Date;
+
 
   @ApiProperty({ description: 'Tags for the post', required: false })
-  @IsString()
+  @IsArray()
+  @IsValidTag({each: true})
+  @IsString({each: true})
   @IsOptional()
-  tags?: string;
+  tags?: string[] | null;
 
   @ApiProperty({ description: 'Hashtags for the post', required: false })
-  @IsString()
+  @IsArray()
   @IsOptional()
-  hastags?: string;
+  @IsString({each: true})
+  hashtags?: string[] | null;
 
   @ApiProperty({ description: 'Author ID of the post', required: false })
   @IsOptional()

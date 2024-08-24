@@ -11,4 +11,14 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Get('policy')
+  getPolicy(): string {
+    return this.appService.getPrivacyPolicy();
+  }
+
+  @Get('terms')
+  getTerms(): string {
+    return this.appService.getTerms();
+  }
 }

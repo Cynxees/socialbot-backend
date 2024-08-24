@@ -5,14 +5,14 @@ export class PostResponseDto implements Partial<Post> {
   id: number;
   title: string;
   caption?: string;
-  url: string;
-  media_type: 'image' | 'video' | 'both';
+  url: string[];
+  mediaType: 'image' | 'video' | 'both';
   location?: string;
   music?: string;
   published?: boolean;
-  date: string;
-  tags?: string;
-  hastags?: string;
+  scheduledDate: Date;
+  tags?: string[];
+  hashtags?: string[];
   authorId?: number;
   
 
@@ -21,13 +21,13 @@ export class PostResponseDto implements Partial<Post> {
     this.title = post.title;
     this.caption = post.caption;
     this.url = post.url;
-    this.media_type = post.media_type;
+    this.mediaType = post.mediaType;
     this.location = post.location;
     this.music = post.music;
     this.published = post.published;
-    this.date = post.date;
+    this.scheduledDate = post.scheduledDate;
     this.tags = post.tags;
-    this.hastags = post.hastags;
+    this.hashtags = post.hashtags;
     this.authorId = post.authorId;
   }
 }

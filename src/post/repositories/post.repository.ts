@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/_infrastructure/prisma/prisma.service';
 import { CreatePostRequestDto } from '../dto/create-post-request.dto';
 import { UpdatePostRequestDto } from '../dto/update-post-request.dto';
-import { PostResponseDto } from '../dto/post-response.dto'; // Import your response DTO
+import { PostResponseDto } from '../dto/post-response.dto'; 
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
-import { Post } from '@prisma/client';
-import { PaginatePostRequestDto } from '../dto/paginate-post-request.dto'; // Import your pagination DTO
+import { Post, Prisma, PrismaClient } from '@prisma/client';
+import { PaginatePostRequestDto } from '../dto/paginate-post-request.dto'; 
+import { identity } from 'rxjs';
 
 @Injectable()
 export class PostRepository {
@@ -19,48 +20,43 @@ export class PostRepository {
     const { data } = params;
     const post = await this.prisma.post.create({ data });
     this.logger.done();
-    return post;
+    return new PostResponseDto(post); 
   }
 
   async paginatePost(params: PaginatePostRequestDto): Promise<PostResponseDto[]> {
     this.logger.start();
-    const { filter, filterBy, order, orderBy, skip, take } = params;
+    const { page = 1, limit = 10, orderBy, search, scheduledDate, tags } = params;
 
-    const whereOption = filterBy && filter ? { [filterBy]: { contains: filter } } : undefined;
-    const orderByOption = { [orderBy]: order };
+    const skip = (page - 1) * limit;
 
-    const res = await this.prisma.post.findMany({
+    const whereOption: Prisma.PostWhereInput = {
+      ...(scheduledDate ? { scheduledDate } : {}),
+      ...(search ? { title: { contains: search, mode: 'insensitive' } } : {}),
+      ...(tags ? { tags: { hasSome: tags.split(',') } } : {}),
+    };
+
+    const orderByOption: Prisma.PostOrderByWithRelationInput = {
+      [orderBy]: 'asc'
+    }
+
+    const posts = await this.prisma.post.findMany({
       where: whereOption,
       orderBy: orderByOption,
       skip,
-      take,
-      select: {
-        id: true,
-        title: true,
-        caption: true,
-        url: true,
-        media_type: true,
-        location: true,
-        music: true,
-        published: true,
-        date: true,
-        tags: true,
-        hastags: true,
-        authorId: true,
-      },
+      take: limit,
     });
 
     this.logger.done();
-    return res;
+    return posts.map(post => new PostResponseDto(post)); 
   }
 
-  async findOne(field: keyof Post, value: any): Promise<Post | null> {
+  async findOne(field: keyof Post, value: any): Promise<PostResponseDto | null> {
     this.logger.start();
-    const post = await this.prisma.post.findFirst({
-      where: { [field]: value },
+    const post = await this.prisma.post.findUnique({
+      where: { [field]: value } as any,
     });
     this.logger.done();
-    return post;
+    return post ? new PostResponseDto(post) : null; 
   }
 
   async deleteById(id: number): Promise<void> {
@@ -71,13 +67,13 @@ export class PostRepository {
     this.logger.done();
   }
 
-  async update(id: number, req: UpdatePostRequestDto): Promise<Post> {
+  async update(id: number, req: UpdatePostRequestDto): Promise<PostResponseDto> {
     this.logger.start();
     const post = await this.prisma.post.update({
       where: { id },
       data: req,
     });
     this.logger.done();
-    return post;
+    return new PostResponseDto(post); 
   }
 }
