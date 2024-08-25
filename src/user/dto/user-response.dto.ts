@@ -7,6 +7,7 @@ export class UserResponseDto implements Partial<User>{
   role: string;
   updatedAt: Date;
   username: string;
+  googleUserId?: number;
 
   static removePassword(userObj: User) {
     return Object.fromEntries(

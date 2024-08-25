@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { IsValidUsername } from "../validators/username.validator";
 import { ValidatorEnum } from "src/common/enums/common.enums";
 
@@ -21,4 +21,7 @@ export class CreateUserRequestDto {
   @IsOptional()
   displayName?: string;
 
+  @IsNumber()
+  @IsOptional()
+  googleUserId?: number;
 }
