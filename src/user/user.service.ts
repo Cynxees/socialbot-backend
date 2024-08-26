@@ -6,16 +6,27 @@ import { UserRepository } from './repositories/user.repository';
 import { PaginateUserRequestDto } from './dto/paginate-user-request.dto';
 import { User } from '@prisma/client';
 import { UpdateUserRequestDto } from './dto/update-user-request.dto';
+import { PrismaTransactionService } from 'src/_infrastructure/prisma/prisma-transaction.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly logger: CustomLoggerService
+    private readonly logger: CustomLoggerService,
+    private readonly prismaTransactionService: PrismaTransactionService
   ) {}
   async create(data: CreateUserRequestDto, currentUser?: JwtUser) : Promise<UserResponseDto> {
     this.logger.start()
-    const user = await this.userRepository.createUser({data}, currentUser);
+
+    const user = await this.prismaTransactionService.transaction<UserResponseDto>(async() => {
+      await this.userRepository.createUser({data}, currentUser)
+      await this.userRepository.createUser({data}, currentUser)
+      await this.userRepository.createUser({data}, currentUser)
+      await this.userRepository.createUser({data}, currentUser)
+      
+      return await this.userRepository.createUser({data}, currentUser)
+      
+    })
     
     this.logger.done();
     return user;

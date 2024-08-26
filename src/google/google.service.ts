@@ -28,10 +28,6 @@ export class GoogleService {
 
         return googleUser;
       })
-
-
-      return googleUser;
-
     }
 
     this.logger.done();
