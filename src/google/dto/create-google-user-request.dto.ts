@@ -3,10 +3,6 @@ import { IsArray, IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } f
 
 export class  CreateGoogleUserRequest {
 
-  @IsNumber()
-  @IsNotEmpty()
-  id: number;
-
   @IsString()
   @IsNotEmpty()
   accessToken: string;

@@ -2,6 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { GoogleUser } from "@prisma/client";
 import { CustomLoggerService } from "src/_infrastructure/logger/logger.service";
 import { PrismaService } from "src/_infrastructure/prisma/prisma.service";
+import { CreateGoogleUserRequest } from "../dto/create-google-user-request.dto";
+import { UpdateUserRequestDto } from "src/user/dto/update-user-request.dto";
 
 @Injectable()
 export class GoogleUserRepository {
@@ -20,4 +22,42 @@ export class GoogleUserRepository {
     return googleUsers;
   }
 
+  async findOne(id: number): Promise<GoogleUser>{
+    this.logger.start();
+
+    const googleUser = await this.prisma.googleUser.findFirst({where: {id}});
+
+    this.logger.done();
+    return googleUser;
+  }
+  
+  async findOneOrThrow(id: number): Promise<GoogleUser>{
+    this.logger.start();
+
+    const googleUser = await this.prisma.googleUser.findFirstOrThrow({where: {id}});
+
+    this.logger.done();
+    return googleUser;
+  }
+
+  async create(data: CreateGoogleUserRequest): Promise<GoogleUser>{
+    this.logger.start();
+
+    const googleUser = await this.prisma.googleUser.create({ data });
+
+    this.logger.done();
+    return googleUser;
+  }
+
+  async update(id: number, data: UpdateUserRequestDto): Promise<GoogleUser>{
+    this.logger.start();
+
+    const googleUser = await this.prisma.googleUser.update({
+      where: { id: id },
+      data: { ...data },
+    });
+
+    this.logger.done();
+    return googleUser;
+  }
 }

@@ -1,3 +1,4 @@
+import { BearerToken } from '@prisma/client';
 import { Transform } from 'class-transformer';
 import { IsArray, IsNumber, IsString } from 'class-validator';
 
@@ -6,11 +7,11 @@ export class GoogleCallbackRequestDto {
   accessToken: string;
 
   @IsString()
-  tokenType: string;
+  tokenType: BearerToken;
 
   @Transform(({ value }) => parseInt(value, 10))
   @IsNumber()
-  expiresIn: number;
+  expiresIn: Date;
 
   @IsArray()
   @IsString({ each: true })
