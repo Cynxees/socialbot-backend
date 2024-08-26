@@ -28,7 +28,6 @@ model Post {
   id                 Int      @default(autoincrement()) @id
   title              String
   caption            String?
-  mediaType          MediaType @default(image)
   location           String?
   music              String?
   published          Boolean? @default(false)
@@ -55,4 +54,5 @@ enum MediaType {
 model File {
   id  Int @default(autoincrement()) @id
   url String
+  mediaType          MediaType @default(image)
 }

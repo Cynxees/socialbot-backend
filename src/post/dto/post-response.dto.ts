@@ -5,7 +5,6 @@ export class PostResponseDto implements Partial<Post> {
   id: number;
   title: string;
   caption?: string;
-  mediaType: 'image' | 'video' | 'both';
   location?: string;
   music?: string;
   published?: boolean;
@@ -19,7 +18,6 @@ export class PostResponseDto implements Partial<Post> {
     this.id = post.id;
     this.title = post.title;
     this.caption = post.caption;
-    this.mediaType = post.mediaType;
     this.location = post.location;
     this.music = post.music;
     this.published = post.published;

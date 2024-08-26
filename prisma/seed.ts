@@ -19,7 +19,6 @@ async function main() {
       {
         title: 'Image Post Published',
         caption: 'An image-only post that is published.',
-        mediaType: MediaType.image,
         location: 'New York',
         music: 'Some Music',
         published: true,
@@ -32,7 +31,6 @@ async function main() {
       {
         title: 'Image Post Unpublished',
         caption: 'An image-only post that is not published.',
-        mediaType: MediaType.image,
         location: 'Los Angeles',
         music: 'Another Music',
         published: false,
@@ -45,7 +43,6 @@ async function main() {
       {
         title: 'Video Post Published',
         caption: 'A video-only post that is published.',
-        mediaType: MediaType.video,
         location: 'San Francisco',
         music: 'Video Music',
         published: true,
@@ -58,7 +55,6 @@ async function main() {
       {
         title: 'Video Post Unpublished',
         caption: 'A video-only post that is not published.',
-        mediaType: MediaType.video,
         location: 'Chicago',
         music: 'Another Video Music',
         published: false,
@@ -71,7 +67,6 @@ async function main() {
       {
         title: 'Post with Both Media Published',
         caption: 'A post with both images and videos that is published.',
-        mediaType: MediaType.both,
         location: 'Seattle',
         music: 'Mixed Media Music',
         published: true,
@@ -84,7 +79,6 @@ async function main() {
       {
         title: 'Post with Both Media Unpublished',
         caption: 'A post with both images and videos that is not published.',
-        mediaType: MediaType.both,
         location: 'Boston',
         music: 'Another Mixed Media Music',
         published: false,
