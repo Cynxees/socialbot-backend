@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { GoogleService } from './google.service';
 import { GoogleCallbackRequestDto } from './dto/google-callback-request.dto';
@@ -18,12 +18,12 @@ export class GoogleController {
     private readonly logger: CustomLoggerService
   ){}
 
-  @Get('callback')
+  @Post('callback')
   @UseGuards(JwtAuthGuard)
-  async getCallback(@Query() query: GoogleCallbackRequestDto, @CurrentUser() user: User) {
+  async getCallback(@Body() data: GoogleCallbackRequestDto, @CurrentUser() user: User) {
     this.logger.start();
     
-    const result = await this.googleService.processCallback(query, user);
+    const result = await this.googleService.processCallback(data, user);
 
     this.logger.done();
     return  result;

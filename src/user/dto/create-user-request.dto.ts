@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { IsValidUsername } from "../validators/username.validator";
 import { ValidatorEnum } from "src/common/enums/common.enums";
+import { Role } from "@prisma/client";
 
 export class CreateUserRequestDto {
 
@@ -15,7 +16,7 @@ export class CreateUserRequestDto {
   
   @IsString()
   @IsNotEmpty()
-  role: string;
+  role: Role;
   
   @IsString()
   @IsOptional()

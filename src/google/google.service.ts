@@ -19,24 +19,39 @@ export class GoogleService {
   async processCallback(data: GoogleCallbackRequestDto, user: User): Promise<GoogleUser>{
     this.logger.start();    
 
-    const googleUser = await this.googleUserRepository.findOne(user.id);
+    let googleUser = await this.googleUserRepository.findOne(user.id);
 
     if(!googleUser){
 
-      return await this.prisma.$transaction(async (tx) => {
-        const googleUser = await this.googleUserRepository.create(data);
+      this.logger.log('creating new google user');
+      googleUser = await this.prisma.$transaction(async (tx) => {
+
+        const googleUser = await tx.googleUser.create({data})
+        await tx.user.update({
+          where: { id: user.id },
+          data: { googleUserId: googleUser.id }
+        });
 
         return googleUser;
-      })
+      });
 
+    }else{
 
-      return googleUser;
+      this.logger.log(`updating google user's scopes`);
+
+      data.scopes.forEach((scope) => {
+        if(!googleUser.scopes.includes(scope)) googleUser.scopes.push(scope);
+      });
+      
+      googleUser = await this.googleUserRepository.update(googleUser.id, {
+        scopes: googleUser.scopes
+      });
 
     }
 
     this.logger.done();
 
-    // return user; 
+    return googleUser; 
   }
 
   async findAll(): Promise<GoogleUserResponse[]>{

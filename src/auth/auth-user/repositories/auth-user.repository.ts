@@ -14,7 +14,7 @@ export class AuthUserRepository {
   async findOneByUsername(username: string): Promise<User> {
     this.logger.start();
 
-    const user = await this.prisma.user.findFirstOrThrow({
+    const user = await this.prisma.user.findFirst({
       where: { username: username }
     });
 

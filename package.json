@@ -20,7 +20,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "db:migration:deploy": "prisma migrate deploy",
     "db:migration:create": "prisma migrate dev --name ",
-    "db:migration:show": "prisma migrate status "
+    "db:migration:show": "prisma migrate status ",
+    "db:seed": "prisma db seed"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.632.0",
@@ -91,5 +92,8 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }

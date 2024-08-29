@@ -3,7 +3,7 @@ import { GoogleUser } from "@prisma/client";
 import { CustomLoggerService } from "src/_infrastructure/logger/logger.service";
 import { PrismaService } from "src/_infrastructure/prisma/prisma.service";
 import { CreateGoogleUserRequest } from "../dto/create-google-user-request.dto";
-import { UpdateUserRequestDto } from "src/user/dto/update-user-request.dto";
+import { UpdateGoogleUserRequest } from "../dto/update-google-user-request.dto";
 
 @Injectable()
 export class GoogleUserRepository {
@@ -49,7 +49,7 @@ export class GoogleUserRepository {
     return googleUser;
   }
 
-  async update(id: number, data: UpdateUserRequestDto): Promise<GoogleUser>{
+  async update(id: number, data: UpdateGoogleUserRequest): Promise<GoogleUser>{
     this.logger.start();
 
     const googleUser = await this.prisma.googleUser.update({

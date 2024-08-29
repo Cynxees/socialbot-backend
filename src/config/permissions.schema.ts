@@ -10,12 +10,6 @@ export enum Action {
   Delete = 'delete',
 }
 
-export enum Role {
-  SUPER_ADMIN = 'super_admin',
-  ADMIN = 'admin',
-  USER = 'user',
-}
-
 export type AppSubjects = Subjects<{
   User: User,
   Post: Post,
