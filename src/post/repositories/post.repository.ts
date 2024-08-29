@@ -18,7 +18,7 @@ export class PostRepository {
   async createPost(params: { data: CreatePostRequestDto }): Promise<PostResponseDto> {
     this.logger.start();
     const { data } = params;
-    const post = await this.prisma.post.create({ data });
+    const post = await this.prisma.post.create({ data:data });
     this.logger.done();
     return new PostResponseDto(post); 
   }

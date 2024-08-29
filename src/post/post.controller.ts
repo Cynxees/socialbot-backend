@@ -9,7 +9,7 @@ import { UpdatePostRequestDto } from './dto/update-post-request.dto';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { Permission } from 'src/common/enums/auth.enums';
 import { captureRejectionSymbol } from 'events';
-
+import { File } from '@prisma/client';
 @ApiTags('Post')
 @Controller('posts')
 @ApiBearerAuth()
@@ -61,5 +61,11 @@ export class PostController {
     const res = await this.postsService.update(id, req);
     this.logger.done();
     return res;
+  }
+
+  @Get(':id/files')
+  async getFilesForPost(@Param('id') id: string): Promise<File[]> {
+    const postId = parseInt(id, 10);
+    return this.postsService.getFilesForPost(postId);
   }
 }

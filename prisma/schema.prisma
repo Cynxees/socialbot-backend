@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,35 +8,40 @@ datasource db {
 }
 
 model User {
-  id    Int     @default(autoincrement()) @id
-  username String @unique
-  displayName  String?
-  password String
-  role String
-  posts Post[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int      @default(autoincrement()) @id
+  username    String   @unique
+  displayName String?
+  password    String
+  role        String
+  posts       Post[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Post {
-  id                 Int      @default(autoincrement()) @id
-  title              String
-  caption            String?
-  location           String?
-  music              String?
-  published          Boolean? @default(false)
-  scheduledDate      DateTime?
-  tags      String[] @default([])
-  hashtags   String[] @default([])
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int
-  
+  id             Int       @default(autoincrement()) @id
+  title          String
+  caption        String?
+  location       String?
+  music          String?
+  published      Boolean?  @default(false)
+  scheduledDate  DateTime?
+  tags           String[]  @default([])
+  hashtags       String[]  @default([])
+  author         User     @relation(fields: [authorId], references: [id])
+  authorId       Int
+  fileIds        Int[]     @default([])
+
   @@index([scheduledDate])     
   @@index([title])     
   @@index([authorId])  
+  @@index([scheduledDate, authorId])
+}
 
- 
-  @@index([scheduledDate , authorId]) 
+model File {
+  id        Int        @default(autoincrement()) @id
+  url       String
+  mediaType MediaType  @default(image)
 }
 
 enum MediaType {
@@ -51,8 +50,3 @@ enum MediaType {
   both
 }
 
-model File {
-  id  Int @default(autoincrement()) @id
-  url String
-  mediaType          MediaType @default(image)
-}

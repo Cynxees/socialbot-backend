@@ -12,18 +12,9 @@ export class PostResponseDto implements Partial<Post> {
   tags?: string[];
   hashtags?: string[];
   authorId: number;
-  
+  fileIds?: number[];
 
   constructor(post: Partial<Post>) {
-    this.id = post.id;
-    this.title = post.title;
-    this.caption = post.caption;
-    this.location = post.location;
-    this.music = post.music;
-    this.published = post.published;
-    this.scheduledDate = post.scheduledDate;
-    this.tags = post.tags;
-    this.hashtags = post.hashtags;
-    this.authorId = post.authorId;
+    Object.assign(this,post)
   }
 }
