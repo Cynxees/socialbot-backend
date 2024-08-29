@@ -6,12 +6,14 @@ import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
 import { PostRepository } from './repositories/post.repository';
 import { Post } from '@prisma/client';
 import { PaginatePostRequestDto } from './dto/paginate-post-request.dto';
-
+import { PrismaService } from 'src/_infrastructure/prisma/prisma.service';
+import { File } from '@prisma/client';
 @Injectable()
 export class PostService {
   constructor(
     private readonly postRepository: PostRepository,
-    private readonly logger: CustomLoggerService
+    private readonly logger: CustomLoggerService,
+    private readonly prisma: PrismaService
   ) {}
 
   async create(data: CreatePostRequestDto): Promise<PostResponseDto> {
@@ -60,6 +62,30 @@ export class PostService {
     const post = await this.postRepository.update(id, req);
     this.logger.done();
     return new PostResponseDto(post);
+  }
+
+
+  async getFilesForPost(postId: number): Promise<File[]> {
+    // Fetch the post by its ID
+    const post = await this.prisma.post.findUnique({
+      where: { id: postId },
+      select: { fileIds: true },
+    });
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    // Use the fileIds array to fetch the corresponding files
+    const files = await this.prisma.file.findMany({
+      where: {
+        id: {
+          in: post.fileIds,
+        },
+      },
+    });
+
+    return files;
   }
 }
 

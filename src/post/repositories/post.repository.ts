@@ -18,14 +18,14 @@ export class PostRepository {
   async createPost(params: { data: CreatePostRequestDto }): Promise<PostResponseDto> {
     this.logger.start();
     const { data } = params;
-    const post = await this.prisma.post.create({ data });
+    const post = await this.prisma.post.create({ data:data });
     this.logger.done();
     return new PostResponseDto(post); 
   }
 
   async paginatePost(params: PaginatePostRequestDto): Promise<PostResponseDto[]> {
     this.logger.start();
-    const { page = 1, limit = 10, orderBy, search, scheduledDate, tags } = params;
+    const { page = 1, limit = 10, order, orderBy, search, scheduledDate, tags } = params;
 
     const skip = (page - 1) * limit;
 
@@ -36,7 +36,7 @@ export class PostRepository {
     };
 
     const orderByOption: Prisma.PostOrderByWithRelationInput = {
-      [orderBy]: 'asc'
+      [orderBy]: order
     }
 
     const posts = await this.prisma.post.findMany({
