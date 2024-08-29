@@ -1,12 +1,13 @@
-import { User } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 export class UserResponseDto implements Partial<User>{
 
   createdAt: Date;
   displayName: string;
   id: number;
-  role: string;
+  role: Role;
   updatedAt: Date;
   username: string;
+  googleUserId?: number;
 
   static removePassword(userObj: User) {
     return Object.fromEntries(

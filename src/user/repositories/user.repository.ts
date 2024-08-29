@@ -85,6 +85,8 @@ export class UserRepository {
         createdAt: true,
         posts: true,
         updatedAt: true,
+        googleUserId: true,
+        googleUser: true,
         password: ability ? !ability.cannot(Action.Read, 'User', 'password'): false
       }
     });  

@@ -1,19 +1,26 @@
+import { BearerToken } from '@prisma/client';
 import { Transform } from 'class-transformer';
-import { IsArray, IsNumber, IsString } from 'class-validator';
+import { IsArray, IsDate, IsEnum, IsNumber, IsString } from 'class-validator';
 
 export class GoogleCallbackRequestDto {
   @IsString()
   accessToken: string;
 
+  @IsEnum(BearerToken)
   @IsString()
-  tokenType: string;
+  tokenType: BearerToken;
 
-  @Transform(({ value }) => parseInt(value, 10))
-  @IsNumber()
-  expiresIn: number;
+  @Transform(({ value }) => {
+    const seconds = parseInt(value, 10);
+    return new Date(Date.now() + seconds * 1000);
+  })
+  @IsDate()
+  expiresIn: Date;
 
+  @Transform(({ value }) => {
+    return value.split(' ')
+  })
   @IsArray()
   @IsString({ each: true })
-  @Transform(({ value }) => Array.isArray(value) ? value : value.split(' '), { toClassOnly: true })
-  scope: string[];
+  scopes: string[];
 }

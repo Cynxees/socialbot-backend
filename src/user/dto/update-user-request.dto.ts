@@ -1,6 +1,7 @@
-import { IsOptional, IsString } from "class-validator";
+import { IsNumber, IsOptional, IsString } from "class-validator";
 import { IsValidUsername } from '../validators/username.validator'
 import { ValidatorEnum } from "src/common/enums/common.enums";
+import { Role } from "@prisma/client";
 
 export class UpdateUserRequestDto {
 
@@ -15,10 +16,13 @@ export class UpdateUserRequestDto {
   
   @IsString()
   @IsOptional()
-  role?: string;
+  role?: Role;
   
   @IsString()
   @IsOptional()
   displayName?: string;
 
+  @IsNumber()
+  @IsOptional()
+  googleUserId?: number;
 }
