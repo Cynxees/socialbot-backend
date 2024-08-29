@@ -1,8 +1,9 @@
 import { AbilityBuilder } from "@casl/ability";
 import { Injectable } from "@nestjs/common";
 import { accessibleBy, createPrismaAbility } from '@casl/prisma';
-import { Ability, Action, AppSubjects, Role, SubjectWhereInput } from "src/config/permissions.schema";
+import { Ability, Action, AppSubjects, SubjectWhereInput } from "src/config/permissions.schema";
 import { CustomLoggerService } from "src/_infrastructure/logger/logger.service";
+import { Role } from "@prisma/client";
 
 @Injectable()
 export class CaslAbilityFactory {
@@ -18,15 +19,15 @@ export class CaslAbilityFactory {
     const { can, cannot, build } = new AbilityBuilder<Ability>(createPrismaAbility)
     this.logger.log('ability created');
 
-    if(user.role == Role.SUPER_ADMIN){
+    if(user.role == Role.super_admin){
       can(Action.Manage, "all")
     }
 
-    if(user.role == Role.ADMIN){
+    if(user.role == Role.admin){
       can(Action.Manage, "User")
     }
 
-    if(user.role == Role.USER){
+    if(user.role == Role.user){
 
       can(Action.Manage, 'Post', {authorId: user.id});
       can(Action.Manage, 'User',{id: user.id});

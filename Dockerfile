@@ -11,7 +11,8 @@ COPY . .
 
 FROM base AS build
 COPY --from=copy /usr/src/app /usr/src/app
-RUN npx prisma generate
-RUN npm run build 
+RUN npx prisma generate && npm run build 
 
-CMD [ "npm", "run", "start:dev"]
+# auto deploy database. then,
+# start depends on NODE_ENV [ need to specify -e NODE_ENV=??? during deployment ] 
+CMD [ "/bin/sh", "-c", "npm run db:migration:deploy && if [ \"$NODE_ENV\" = \"production\" ]; then npm run start; else npm run start:dev; fi" ]

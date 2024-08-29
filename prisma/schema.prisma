@@ -7,17 +7,40 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// USER
 model User {
-  id          Int      @default(autoincrement()) @id
-  username    String   @unique
-  displayName String?
-  password    String
-  role        String
-  posts       Post[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           Int         @id @default(autoincrement())
+  username     String      @unique
+  displayName  String?
+  password     String
+  role         Role        @default(user)
+  posts        Post[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  googleUserId Int?        @unique
+  googleUser   GoogleUser? @relation(fields: [googleUserId], references: [id])
 }
 
+enum Role {
+  super_admin
+  admin
+  user
+}
+
+model GoogleUser {
+  id          Int         @id @default(autoincrement())
+  accessToken String
+  tokenType   BearerToken
+  expiresIn   DateTime
+  scopes      String[]
+  User        User?
+}
+
+enum BearerToken {
+  bearer
+}
+
+// POST
 model Post {
   id             Int       @default(autoincrement()) @id
   title          String

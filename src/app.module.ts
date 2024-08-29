@@ -8,9 +8,10 @@ import { CommonModule } from './common/common.module';
 import { CustomConfigModule } from './config/config.module';
 import { FileModule } from './file/file.module';
 import { AuthModule } from './auth/auth.module';
+import { GoogleModule } from './google/google.module';
 
 @Module({
-  imports: [InfrastructureModule, CustomConfigModule, CommonModule, UserModule, PostModule, FileModule, AuthModule],
+  imports: [InfrastructureModule, CustomConfigModule, CommonModule, UserModule, PostModule, FileModule, AuthModule, GoogleModule],
   controllers: [AppController],
   providers: [AppService],
 })
