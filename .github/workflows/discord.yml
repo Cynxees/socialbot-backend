@@ -1,0 +1,20 @@
+name: Discord Message
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  send-discord-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send message to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          curl -H "Content-Type: application/json" \
+               -d '{"content": "Pushed to master"}' \
+               $DISCORD_WEBHOOK_URL
+    
+        
