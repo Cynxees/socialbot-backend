@@ -1,9 +1,8 @@
 name: Discord Message
 
 on:
-  push:
-    branches:
-      - master
+  pull_request:
+    types: [opened, reopened, synchronize]
 
 jobs:
   send-discord-message:
@@ -13,8 +12,12 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          PR_NUMBER="${{ github.event.pull_request.number }}"
           curl -H "Content-Type: application/json" \
-               -d '{"content": "Pushed to master"}' \
+               -d "{\"content\": \"📢 **Pull Request #$PR_NUMBER Opened**\n\n**Title:** $PR_TITLE\n**Author:** $PR_AUTHOR\n**URL:** $PR_URL\"}" \
                $DISCORD_WEBHOOK_URL
     
         
