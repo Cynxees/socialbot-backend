@@ -2,10 +2,11 @@ name: Discord Message
 
 on:
   pull_request:
-    types: [opened, reopened, synchronize]
+    types: [closed]
 
 jobs:
   send-discord-message:
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master'
     runs-on: ubuntu-latest
     steps:
       - name: Send message to Discord
@@ -17,7 +18,5 @@ jobs:
           PR_URL="${{ github.event.pull_request.html_url }}"
           PR_NUMBER="${{ github.event.pull_request.number }}"
           curl -H "Content-Type: application/json" \
-               -d "{\"content\": \"📢 **Pull Request #$PR_NUMBER Opened**\n\n**Title:** $PR_TITLE\n**Author:** $PR_AUTHOR\n**URL:** $PR_URL\"}" \
+               -d "{\"username\": \"$PR_AUTHOR\", \"content\": \"📢 **Pull Request #$PR_NUMBER Merged**\n\n# Title: $PR_TITLE\n**Author:** $PR_AUTHOR\n**URL:** $PR_URL\"}" \
                $DISCORD_WEBHOOK_URL
-    
-        
