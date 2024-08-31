@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
-import { UserService } from 'src/user/user.service';
 import { GoogleCallbackRequestDto } from './dto/google-callback-request.dto';
 import { GoogleUser, User } from '@prisma/client';
 import { GoogleUserResponse } from './dto/google-user-response.dto';
@@ -8,7 +7,7 @@ import { GoogleUserRepository } from './repositories/google-user.repository';
 import { PrismaService } from 'src/_infrastructure/prisma/prisma.service';
 
 @Injectable()
-export class GoogleService {
+export class GoogleUserService {
 
   constructor(
     private readonly logger: CustomLoggerService,

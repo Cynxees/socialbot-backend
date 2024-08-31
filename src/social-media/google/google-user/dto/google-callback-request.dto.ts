@@ -1,6 +1,6 @@
 import { BearerToken } from '@prisma/client';
 import { Transform } from 'class-transformer';
-import { IsArray, IsDate, IsEnum, IsNumber, IsString } from 'class-validator';
+import { IsArray, IsDate, IsEnum, IsString } from 'class-validator';
 
 export class GoogleCallbackRequestDto {
   @IsString()

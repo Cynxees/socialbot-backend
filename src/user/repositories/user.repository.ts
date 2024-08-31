@@ -9,6 +9,7 @@ import { UpdateUserRequestDto } from "../dto/update-user-request.dto";
 import { CaslAbilityFactory } from "src/common/casl/casl-ability.factory/casl-ability.factory";
 import { Action } from "src/config/permissions.schema";
 import { subject } from "@casl/ability";
+import { UserEntity } from "../entities/user.entity";
 
 @Injectable()
 export class UserRepository {
@@ -63,8 +64,9 @@ export class UserRepository {
     this.logger.done()
     return res;
   }
+  
 
-  async findOne(field: keyof User, value: any, currentUser?: JwtUser): Promise<User | null>{
+  async findOne(field: keyof User, value: any, currentUser?: JwtUser): Promise<UserEntity | null>{
     this.logger.start();
 
     const ability = this.caslService.createForUser(currentUser);
@@ -90,7 +92,7 @@ export class UserRepository {
         password: ability ? !ability.cannot(Action.Read, 'User', 'password'): false
       }
     });  
-    
+
     this.logger.done();
     return user;
   }

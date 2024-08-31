@@ -6,6 +6,7 @@ import { UserRepository } from './repositories/user.repository';
 import { PaginateUserRequestDto } from './dto/paginate-user-request.dto';
 import { User } from '@prisma/client';
 import { UpdateUserRequestDto } from './dto/update-user-request.dto';
+import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
@@ -30,14 +31,14 @@ export class UserService {
     return res;
   }
 
-  async findOne(field: keyof User, value: any, currentUser?: JwtUser){
+  async findOne(field: keyof User, value: any, currentUser?: JwtUser): Promise<UserEntity | null>{
     this.logger.start()
     const user = this.userRepository.findOne(field, value, currentUser);
     this.logger.done();
     return user;
   }
 
-  async findByIdOrThrow(id: number, currentUser?: JwtUser): Promise<User>{
+  async findByIdOrThrow(id: number, currentUser?: JwtUser): Promise<UserEntity>{
     this.logger.start()
 
     const user = await this.findOne('id', id, currentUser);

@@ -1,5 +1,5 @@
 import { BearerToken } from "@prisma/client";
-import { IsArray, IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsArray, IsDate, IsEnum, IsOptional, IsString } from "class-validator";
 
 export class  UpdateGoogleUserRequest {
 

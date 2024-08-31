@@ -1,20 +1,20 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiProperty, ApiTags } from '@nestjs/swagger';
-import { GoogleService } from './google.service';
+import { GoogleUserService } from './google_user.service';
 import { GoogleCallbackRequestDto } from './dto/google-callback-request.dto';
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
-import { GoogleUser, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { GoogleUserResponse } from './dto/google-user-response.dto';
 
 @Controller('google')
 @ApiTags('Google')
 @ApiBearerAuth()
-export class GoogleController {
+export class GoogleUserController {
 
   constructor(
-    private readonly googleService: GoogleService,
+    private readonly googleUserService: GoogleUserService,
     private readonly logger: CustomLoggerService
   ){}
 
@@ -23,7 +23,7 @@ export class GoogleController {
   async getCallback(@Body() data: GoogleCallbackRequestDto, @CurrentUser() user: User) {
     this.logger.start();
     
-    const result = await this.googleService.processCallback(data, user);
+    const result = await this.googleUserService.processCallback(data, user);
 
     this.logger.done();
     return  result;
@@ -36,7 +36,7 @@ export class GoogleController {
   })
   async getAll(): Promise<GoogleUserResponse[]> {
     this.logger.start()
-    const res = await this.googleService.findAll();
+    const res = await this.googleUserService.findAll();
     this.logger.done();
     return res;
   }

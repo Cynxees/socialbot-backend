@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from 'src/user/user.module';
-import { LoggerModule } from 'src/_infrastructure/logger/logger.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CaslModule } from 'src/common/casl/casl.module';
 import { JwtStrategy } from './strategy/jwt.strategy';
@@ -13,7 +11,6 @@ import { AuthUserModule } from './auth-user/auth-user.module';
 
 @Module({
   imports: [
-    LoggerModule,
     PassportModule,
     ConfigModule,
     CaslModule,
