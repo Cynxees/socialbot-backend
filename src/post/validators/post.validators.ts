@@ -13,10 +13,28 @@ import {
 import { ValidatorEnum } from 'src/common/enums/common.enums';
 import { PostService } from '../post.service';
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
+import { PrismaService } from 'src/_infrastructure/prisma/prisma.service';
 import { Post } from '@prisma/client';
 
 @Injectable()
-@ValidatorConstraint({ async: true })
+@ValidatorConstraint({ name: 'fileExists', async: true })
+export class FileExistsValidator implements ValidatorConstraintInterface {
+  constructor(private readonly prisma: PrismaService) {}
+
+  async validate(fileId: number, args: ValidationArguments): Promise<boolean> {
+    const file = await this.prisma.file.findUnique({
+      where: { id: fileId },
+    });
+    return !!file;
+  }
+
+  defaultMessage(args: ValidationArguments): string {
+    return `File with ID ${args.value} does not exist`;
+  }
+}
+
+@Injectable()
+@ValidatorConstraint({ name: 'postValidation', async: true })
 export class PostValidationConstraint implements ValidatorConstraintInterface {
   constructor(
     private readonly postService: PostService,
@@ -69,3 +87,4 @@ export function IsValidTag(validationOptions?: ValidationOptions) {
     });
   };
 }
+

@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString, IsEnum } from "class-validator";
+import { MediaTypeEnum } from "src/common/enums/media-type.enums";
 
 export class CreateFileRequestDto {
 
@@ -6,4 +7,6 @@ export class CreateFileRequestDto {
   @IsNotEmpty()
   url: string;
 
+  @IsEnum(MediaTypeEnum)
+  mediaType: MediaTypeEnum;
 }

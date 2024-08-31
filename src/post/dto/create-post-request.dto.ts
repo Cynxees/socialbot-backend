@@ -1,9 +1,7 @@
-import { IsNotEmpty, IsOptional, IsString, IsBoolean, IsEnum, IsArray, IsDate } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsBoolean, IsArray, IsDate, IsInt, Validate } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsValidTag } from '../validators/post.validators';
-import { MediaType } from '@prisma/client'; // Import MediaType from Prisma
+import { IsValidTag, FileExistsValidator } from '../validators/post.validators';
 import { Transform } from 'class-transformer';
-
 export class CreatePostRequestDto {
   
   @ApiProperty({ description: 'Title of the post' })
@@ -16,15 +14,6 @@ export class CreatePostRequestDto {
   @IsOptional()
   caption?: string;
 
-  @ApiProperty({ description: 'URL of the media' })
-  @IsString({each:true})
-  @IsNotEmpty()
-  @IsArray()
-  url: string[]| null;
-
-  @ApiProperty({ description: 'Type of media', enum: ['image', 'video', 'both'] })
-  @IsEnum(MediaType)
-  mediaType: MediaType;
 
   @ApiProperty({ description: 'Location of the post', required: false })
   @IsString()
@@ -63,5 +52,12 @@ export class CreatePostRequestDto {
 
   @ApiProperty({ description: 'Author ID of the post', required: false })
   @IsOptional()
-  authorId?: number;
+  authorId: number;
+
+
+  @IsOptional()
+  @IsArray()
+  @IsInt({ each: true })
+  @Validate(FileExistsValidator, { each: true })
+  fileIds?: number[] | null;
 }
