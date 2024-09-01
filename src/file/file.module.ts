@@ -8,5 +8,6 @@ import { StorageModule } from 'src/_infrastructure/storage/storage.module';
   imports: [StorageModule],
   controllers: [FileController],
   providers: [FileService, FileRepository],
+  exports: [FileService]
 })
 export class FileModule {}

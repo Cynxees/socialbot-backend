@@ -3,11 +3,13 @@ import { YoutubeService } from './youtube.service';
 import { YoutubeController } from './youtube.controller';
 import { GoogleUserModule } from '../google-user/google_user.module';
 import { UserModule } from 'src/user/user.module';
+import { FileModule } from 'src/file/file.module';
 
 @Module({
   imports: [
     GoogleUserModule,
-    UserModule
+    UserModule,
+    FileModule
   ],
   controllers: [YoutubeController],
   providers: [YoutubeService],

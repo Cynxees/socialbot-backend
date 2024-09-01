@@ -1,7 +1,7 @@
 import { BearerToken } from "@prisma/client";
 import { IsArray, IsDate, IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
-export class  CreateGoogleUserRequest {
+export class CreateGoogleUserRequest {
 
   @IsString()
   @IsNotEmpty()

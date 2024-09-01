@@ -12,7 +12,7 @@ export class FileRepository {
     private readonly prisma: PrismaService
   ){}
 
-  async createFile(data : CreateFileRequestDto): Promise<File>{
+  async createFile(data: CreateFileRequestDto): Promise<File> {
     this.logger.start();
 
     const file = await this.prisma.file.create({
@@ -21,5 +21,16 @@ export class FileRepository {
 
     this.logger.done();
     return file;
-  }  
+  }
+
+  async findOne(id: number): Promise<File> {
+    this.logger.start();
+
+    const file = await this.prisma.file.findFirst({
+      where: { id }
+    });
+
+    this.logger.done();
+    return file;
+  }
 }
