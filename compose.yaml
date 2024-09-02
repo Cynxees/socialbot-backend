@@ -33,23 +33,6 @@ services:
     networks:
       - backend-network
 
-  # docs: 
-  #   build: 
-  #     context: . 
-  #   container_name: doc
-  #   ports: 
-  #     - '8080:8080' 
-  #   depends_on: 
-  #     - app
-  #   volumes:
-  #       - ./src:/app/src 
-  #   networks:
-  #     - backend-network
-  #   command: >
-  #     /bin/sh -c "
-  #     npx @compodoc/compodoc -p tsconfig.json -s
-  #     "
-
   dbeaver:
     image: dbeaver/cloudbeaver
     # restart: always 
@@ -66,6 +49,8 @@ services:
 
 volumes:
   pgvolume:
+    driver: local
+  dbeaver:
     driver: local
 networks:
     backend-network:

@@ -5,6 +5,7 @@ import { FileResponseDto } from './dto/file-response.dto';
 import { StorageService } from 'src/_infrastructure/storage/storage.service';
 import { File } from '@prisma/client';
 import { MediaTypeEnum } from 'src/common/enums/media-type.enums';
+import { Readable } from 'stream';
 @Injectable()
 export class FileService {
 
@@ -61,6 +62,19 @@ export class FileService {
 
     this.logger.done();
     return signedUrl;
+  }
+
+  async getFileObject(fileId: number): Promise<Readable> {
+    this.logger.start();
+
+    this.logger.log('getting file');
+    const file = await this.findOneOrThrow(fileId);
+
+    this.logger.log('getting file object');
+    const fileObject = await this.storageService.getFile(file.url);
+
+    this.logger.done();
+    return fileObject;
   }
 
 }

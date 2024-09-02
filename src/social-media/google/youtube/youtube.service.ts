@@ -4,7 +4,6 @@ import { GoogleUserService } from '../google-user/google_user.service';
 import { google, youtube_v3 } from 'googleapis'
 import { YoutubeProfileResponseDto } from './dto/youtube-profile-response.dto';
 import { FileService } from 'src/file/file.service';
-import axios from 'axios';
 
 @Injectable()
 export class YoutubeService {
@@ -51,13 +50,8 @@ async getYoutubeProfile(currentUser: JwtUser): Promise<YoutubeProfileResponseDto
     this.logger.log('getting OAuth2 client');
     const oAuth2Client = await this.googleUserService.getOauthClient(currentUser);
 
-    this.logger.log('getting signed url');
-    const signedUrl = await this.fileService.getSignedUrl(fileId);
-
-    this.logger.log(`getting video from ${signedUrl}`);
-    const response = await axios.get(signedUrl, {
-      responseType: 'stream',
-    });
+    this.logger.log(`getting video`);
+    const response = await this.fileService.getFileObject(fileId);
 
     this.logger.log('uploading video');
     const youtubeResponse = await this.youtubeApi.videos.insert({
@@ -76,7 +70,7 @@ async getYoutubeProfile(currentUser: JwtUser): Promise<YoutubeProfileResponseDto
         },
       },
       media: {
-        body: response.data,
+        body: response,
       },
     }).catch((err) => {
       this.logger.error('Error uploading video:', err.message);

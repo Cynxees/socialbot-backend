@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
 import { GoogleCallbackRequestDto } from './dto/google-callback-request.dto';
-import { GoogleUser, User } from '@prisma/client';
+import { GoogleUser } from '@prisma/client';
 import { GoogleUserResponse } from './dto/google-user-response.dto';
 import { GoogleUserRepository } from './repositories/google-user.repository';
 import { PrismaService } from 'src/_infrastructure/prisma/prisma.service';
@@ -39,10 +39,11 @@ export class GoogleUserService {
     return oauth2Client;
   }
 
-  async processCallback(data: GoogleCallbackRequestDto, user: User): Promise<GoogleUser>{
+  async processCallback(data: GoogleCallbackRequestDto, user: JwtUser): Promise<GoogleUser>{
     this.logger.start();    
 
-    let googleUser = await this.googleUserRepository.findOne(user.id);
+    console.debug(user);
+    let googleUser = user.googleUserId ? await this.googleUserRepository.findOne(user.googleUserId) : null;
 
     if(!googleUser){
 
@@ -67,6 +68,7 @@ export class GoogleUserService {
       });
       
       googleUser = await this.googleUserRepository.update(googleUser.id, {
+        ...data,
         scopes: googleUser.scopes
       });
 

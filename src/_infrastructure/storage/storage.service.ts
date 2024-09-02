@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { CustomLoggerService } from '../logger/logger.service';
 import { ConfigSchema } from 'src/config/config.schema';
 import * as bcrypt from 'bcrypt'
+import { Readable } from 'stream';
 
 
 @Injectable()
@@ -32,7 +33,7 @@ export class StorageService {
   private getKeyFromUrl(url: string): string {
     this.logger.start();
 
-    const key = url.split('https://${this.s3BucketName}.s3.${this.s3Region}.amazonaws.com/')[0];  
+    const key = url.replace(`https://${this.s3BucketName}.s3.${this.s3Region}.amazonaws.com/`, '');  
 
     this.logger.done();
     return key;
@@ -78,7 +79,6 @@ export class StorageService {
 
   async getSignedUrl(url: string, expires: number): Promise<string> {
     this.logger.start();
-    return url;
 
     const key = this.getKeyFromUrl(url);
 
@@ -95,5 +95,27 @@ export class StorageService {
 
     this.logger.done();
     return signedUrl;
+  }
+
+  async getFile(url: string): Promise<Readable>{
+    this.logger.start();
+    
+    const key = this.getKeyFromUrl(url);
+
+    this.logger.log('creating command');
+    const command = new GetObjectCommand({
+      Bucket: this.s3BucketName,
+      Key: key,
+    });
+
+    this.logger.log(`getting file from key ${key}`)
+    const { Body } = await this.s3Client.send(command);
+    
+    if (!(Body instanceof Readable)) {
+      throw new InternalServerErrorException('S3 Body is not readable stream.');
+    }
+
+    this.logger.done();
+    return Body;
   }
 }

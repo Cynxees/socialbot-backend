@@ -24,8 +24,9 @@ export class GoogleUserRepository {
 
   async findOne(id: number): Promise<GoogleUser>{
     this.logger.start();
+    this.logger.log(`finding google user with id ${id}`);
 
-    const googleUser = await this.prisma.googleUser.findFirst({where: {id}});
+    const googleUser = await this.prisma.googleUser.findFirst({where: {id: id}});
 
     this.logger.done();
     return googleUser;
@@ -33,7 +34,6 @@ export class GoogleUserRepository {
   
   async findOneOrThrow(id: number): Promise<GoogleUser>{
     this.logger.start();
-
     const googleUser = await this.prisma.googleUser.findFirstOrThrow({where: {id}});
 
     this.logger.done();
