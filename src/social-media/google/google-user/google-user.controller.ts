@@ -4,7 +4,6 @@ import { GoogleUserService } from './google_user.service';
 import { GoogleCallbackRequestDto } from './dto/google-callback-request.dto';
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
-import { User } from '@prisma/client';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { GoogleUserResponse } from './dto/google-user-response.dto';
 
@@ -20,7 +19,7 @@ export class GoogleUserController {
 
   @Post('callback')
   @UseGuards(JwtAuthGuard)
-  async getCallback(@Body() data: GoogleCallbackRequestDto, @CurrentUser() user: User) {
+  async getCallback(@Body() data: GoogleCallbackRequestDto, @CurrentUser() user: JwtUser) {
     this.logger.start();
     
     const result = await this.googleUserService.processCallback(data, user);

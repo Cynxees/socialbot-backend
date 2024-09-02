@@ -1,9 +1,11 @@
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CustomLoggerService } from '../logger/logger.service';
 import { ConfigSchema } from 'src/config/config.schema';
 import * as bcrypt from 'bcrypt'
+import { Readable } from 'stream';
 
 
 @Injectable()
@@ -26,6 +28,15 @@ export class StorageService {
       },
     });
     this.s3BucketName = this.configService.getOrThrow<ConfigSchema['AWS']>('AWS').AWS_S3_BUCKET_NAME;
+  }
+
+  private getKeyFromUrl(url: string): string {
+    this.logger.start();
+
+    const key = url.replace(`https://${this.s3BucketName}.s3.${this.s3Region}.amazonaws.com/`, '');  
+
+    this.logger.done();
+    return key;
   }
 
   async uploadFile(key: string, fileBuffer: Buffer) : Promise<string> {
@@ -64,5 +75,47 @@ export class StorageService {
       this.logger.error(`Failed to upload file: ${error.message}`);
       throw new InternalServerErrorException(`Failed to upload file`);
     }
+  }
+
+  async getSignedUrl(url: string, expires: number): Promise<string> {
+    this.logger.start();
+
+    const key = this.getKeyFromUrl(url);
+
+    this.logger.log('creating command');
+    const command = new GetObjectCommand({
+      Bucket: this.s3BucketName,
+      Key: key,
+    });
+
+    this.logger.log('getting signed url')
+    const signedUrl = await getSignedUrl(this.s3Client, command, {
+      expiresIn: expires,
+    });
+
+    this.logger.done();
+    return signedUrl;
+  }
+
+  async getFile(url: string): Promise<Readable>{
+    this.logger.start();
+    
+    const key = this.getKeyFromUrl(url);
+
+    this.logger.log('creating command');
+    const command = new GetObjectCommand({
+      Bucket: this.s3BucketName,
+      Key: key,
+    });
+
+    this.logger.log(`getting file from key ${key}`)
+    const { Body } = await this.s3Client.send(command);
+    
+    if (!(Body instanceof Readable)) {
+      throw new InternalServerErrorException('S3 Body is not readable stream.');
+    }
+
+    this.logger.done();
+    return Body;
   }
 }

@@ -1,10 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
 import { GoogleCallbackRequestDto } from './dto/google-callback-request.dto';
-import { GoogleUser, User } from '@prisma/client';
+import { GoogleUser } from '@prisma/client';
 import { GoogleUserResponse } from './dto/google-user-response.dto';
 import { GoogleUserRepository } from './repositories/google-user.repository';
 import { PrismaService } from 'src/_infrastructure/prisma/prisma.service';
+import { UserService } from 'src/user/user.service';
+import { google } from 'googleapis';
+import { OAuth2Client } from 'google-auth-library';
 
 @Injectable()
 export class GoogleUserService {
@@ -12,13 +15,35 @@ export class GoogleUserService {
   constructor(
     private readonly logger: CustomLoggerService,
     private readonly googleUserRepository: GoogleUserRepository,
-    private readonly prisma: PrismaService
+    private readonly prisma: PrismaService,
+    private readonly userService: UserService,
   ){}
 
-  async processCallback(data: GoogleCallbackRequestDto, user: User): Promise<GoogleUser>{
+  async getOauthClient(currentUser: JwtUser): Promise<OAuth2Client> {
+    this.logger.start();
+    this.logger.log('getting user');
+    const user = await this.userService.findByIdOrThrow(currentUser.id);
+
+    const accessToken = user.googleUser?.accessToken;
+    if(!accessToken) {
+      const err = 'Google Access Token Not Found'
+      this.logger.error(err);
+      throw new NotFoundException(err);
+    }
+
+    this.logger.log('creating OAuth2 client');
+    const oauth2Client = new google.auth.OAuth2();
+    oauth2Client.setCredentials({ access_token: accessToken });
+
+    this.logger.done();
+    return oauth2Client;
+  }
+
+  async processCallback(data: GoogleCallbackRequestDto, user: JwtUser): Promise<GoogleUser>{
     this.logger.start();    
 
-    let googleUser = await this.googleUserRepository.findOne(user.id);
+    console.debug(user);
+    let googleUser = user.googleUserId ? await this.googleUserRepository.findOne(user.googleUserId) : null;
 
     if(!googleUser){
 
@@ -43,6 +68,7 @@ export class GoogleUserService {
       });
       
       googleUser = await this.googleUserRepository.update(googleUser.id, {
+        ...data,
         scopes: googleUser.scopes
       });
 

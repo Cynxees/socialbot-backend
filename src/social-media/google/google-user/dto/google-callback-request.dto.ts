@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { BearerToken } from '@prisma/client';
 import { Transform } from 'class-transformer';
 import { IsArray, IsDate, IsEnum, IsString } from 'class-validator';
@@ -17,6 +18,10 @@ export class GoogleCallbackRequestDto {
   @IsDate()
   expiresIn: Date;
 
+  @ApiProperty({
+    type: 'string',
+    description: 'Seperated with space'
+  })
   @Transform(({ value }) => {
     return value.split(' ')
   })

@@ -1,5 +1,6 @@
 type JwtUser = {
   id: number;
   username: string;
-  role: string
+  role: string;
+  googleUserId?: number;
 }

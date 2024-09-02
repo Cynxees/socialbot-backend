@@ -34,7 +34,7 @@ export class AuthService {
     this.logger.log('validating user');
     const user = await this.validateUser(req.username, req.password);
 
-    const payload = {id: user.id, username: user.username, role: user.role} as JwtUser;
+    const payload = {id: user.id, username: user.username, role: user.role, googleUserId: user.googleUserId} as JwtUser;
 
     const accessToken = this.jwtService.sign(payload);
     this.logger.debug(accessToken);
