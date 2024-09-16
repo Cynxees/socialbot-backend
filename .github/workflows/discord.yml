@@ -37,12 +37,34 @@ jobs:
           echo "Escaped PR_NUMBER: $ESCAPED_NUMBER"
           echo "Escaped PR_DESCRIPTION: $ESCAPED_DESCRIPTION"
           
-          CONTENT=$'📢 **Pull Request #'"$ESCAPED_NUMBER"' Merged**\n\n**Title:** '"$ESCAPED_TITLE"'\n**Author:** '"$ESCAPED_AUTHOR"'\n**URL:** '"$ESCAPED_URL"'\n**Description:** '"$ESCAPED_DESCRIPTION"''
-
-          echo "CONTENT: $CONTENT"
-          echo "WEBHOOK URL: $DISCORD_WEBHOOK_URL"
+          EMBED_PAYLOAD=$(jq -n \
+            --arg title "Pull Request #$ESCAPED_NUMBER Merged" \
+            --arg description "$ESCAPED_DESCRIPTION" \
+            --arg url "$ESCAPED_URL" \
+            --arg author "$ESCAPED_AUTHOR" \
+            '{
+              "embeds": [
+                {
+                  "title": $title,
+                  "description": $description,
+                  "fields": [
+                    {
+                      "name": "Author",
+                      "value": $author,
+                      "inline": true
+                    },
+                    {
+                      "name": "URL",
+                      "value": $url,
+                      "inline": true
+                    }
+                  ],
+                  "color": 3066993
+                }
+              ]
+            }')
 
           curl -H "Content-Type: application/json" \
-              -d "$(jq -n --arg content "$CONTENT" '{"username": "testuser", "content": $content}')" \
+              -d "$EMBED_PAYLOAD" \
               "$DISCORD_WEBHOOK_URL"
         
