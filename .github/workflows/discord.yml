@@ -7,7 +7,6 @@ on:
 
 jobs:
   send-discord-message:
-    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master'
     runs-on: ubuntu-latest
     steps:
       - name: Send message to Discord
