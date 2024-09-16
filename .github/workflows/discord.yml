@@ -1,6 +1,9 @@
 name: Discord Message
 
 on:
+  push:
+    branches:
+      - "**"
   pull_request:
     types: [closed]
 
@@ -24,6 +27,18 @@ jobs:
           ESCAPED_URL=$(echo "$PR_URL" | jq -Rr @json)
           ESCAPED_NUMBER=$(echo "$PR_NUMBER" | jq -Rr @json)
           ESCAPED_DESCRIPTION=$(echo "$PR_DESCRIPTION" | jq -Rr @json)
+
+          echo "PR_TITLE: $PR_TITLE"
+          echo "PR_AUTHOR: $PR_AUTHOR"
+          echo "PR_URL: $PR_URL"
+          echo "PR_NUMBER: $PR_NUMBER"
+          echo "PR_DESCRIPTION: $PR_DESCRIPTION"
+
+          echo "Escaped PR_TITLE: $ESCAPED_TITLE"
+          echo "Escaped PR_AUTHOR: $ESCAPED_AUTHOR"
+          echo "Escaped PR_URL: $ESCAPED_URL"
+          echo "Escaped PR_NUMBER: $ESCAPED_NUMBER"
+          echo "Escaped PR_DESCRIPTION: $ESCAPED_DESCRIPTION"
 
           curl -H "Content-Type: application/json" \
           -d "{\"username\": $ESCAPED_AUTHOR, \"content\": \"📢 **Pull Request #$ESCAPED_NUMBER Merged**\n\n# Title: $ESCAPED_TITLE\n**Author:** $ESCAPED_AUTHOR\n**URL:** $ESCAPED_URL\n**DESCRIPTION:** $ESCAPED_DESCRIPTION\"}" \
