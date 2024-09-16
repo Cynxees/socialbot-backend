@@ -42,7 +42,7 @@ async function bootstrap() {
     customCss: '.topbar { display: none !important; }',
   });
 
-  await app.listen(8000).finally(() => {
+  await app.listen(3000).finally(() => {
     const logger = new CustomLoggerService()
     logger.debug('sheeeeeesh');
     logger.log('sheeeeeeesh');
