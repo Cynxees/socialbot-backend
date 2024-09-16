@@ -44,7 +44,7 @@ async getYoutubeProfile(currentUser: JwtUser): Promise<YoutubeProfileResponseDto
     return youtubeProfile;
   }
 
-  async uploadVideo(fileId: number, currentUser: JwtUser){
+  async uploadVideo(fileId: number, currentUser: JwtUser, snippet?: youtube_v3.Schema$VideoSnippet){
     this.logger.start();
 
     this.logger.log('getting OAuth2 client');
@@ -64,6 +64,7 @@ async getYoutubeProfile(currentUser: JwtUser): Promise<YoutubeProfileResponseDto
           categoryId: '22', // category list: https://developers.google.com/youtube/v3/docs/videoCategories/list
           defaultLanguage: 'en',
           defaultAudioLanguage: 'en',
+          ...snippet
         },
         status: {
           privacyStatus: 'private',

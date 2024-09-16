@@ -4,8 +4,8 @@ export class PostResponseDto implements Partial<Post> {
 
   id: number;
   title: string;
-  caption?: string;
-  location?: string;
+  caption: string;
+  location: string;
   music?: string;
   published?: boolean;
   scheduledDate: Date;
