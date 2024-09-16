@@ -51,7 +51,7 @@ export class UpdatePostRequestDto {
 
   @ApiProperty({ description: 'Author ID of the post', required: false })
   @IsOptional()
-  authorId: number;
+  authorId?: number;
 
 
   @IsOptional()

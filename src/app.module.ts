@@ -9,10 +9,12 @@ import { CustomConfigModule } from './config/config.module';
 import { FileModule } from './file/file.module';
 import { AuthModule } from './auth/auth.module';
 import { SocialMediaModule } from './social-media/social-media.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     InfrastructureModule,
+    ScheduleModule.forRoot(),
     CustomConfigModule,
     CommonModule,
     UserModule,

@@ -2,11 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/_infrastructure/prisma/prisma.service';
 import { CreatePostRequestDto } from '../dto/create-post-request.dto';
 import { UpdatePostRequestDto } from '../dto/update-post-request.dto';
-import { PostResponseDto } from '../dto/post-response.dto'; 
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
-import { Post, Prisma, PrismaClient } from '@prisma/client';
+import { Post, Prisma } from '@prisma/client';
 import { PaginatePostRequestDto } from '../dto/paginate-post-request.dto'; 
-import { identity } from 'rxjs';
 
 @Injectable()
 export class PostRepository {
@@ -15,15 +13,15 @@ export class PostRepository {
     private readonly logger: CustomLoggerService,
   ) {}
 
-  async createPost(params: { data: CreatePostRequestDto }): Promise<PostResponseDto> {
+  async createPost(params: { data: CreatePostRequestDto }): Promise<Post> {
     this.logger.start();
     const { data } = params;
     const post = await this.prisma.post.create({ data:data });
     this.logger.done();
-    return new PostResponseDto(post); 
+    return post; 
   }
 
-  async paginatePost(params: PaginatePostRequestDto): Promise<PostResponseDto[]> {
+  async paginatePost(params: PaginatePostRequestDto): Promise<Post[]> {
     this.logger.start();
     const { page = 1, limit = 10, order, orderBy, search, scheduledDate, tags } = params;
 
@@ -47,16 +45,16 @@ export class PostRepository {
     });
 
     this.logger.done();
-    return posts.map(post => new PostResponseDto(post)); 
+    return posts; 
   }
 
-  async findOne(field: keyof Post, value: any): Promise<PostResponseDto | null> {
+  async findOne(field: keyof Post, value: any): Promise<Post | null> {
     this.logger.start();
     const post = await this.prisma.post.findUnique({
       where: { [field]: value } as any,
     });
     this.logger.done();
-    return post ? new PostResponseDto(post) : null; 
+    return post; 
   }
 
   async deleteById(id: number): Promise<void> {
@@ -67,13 +65,26 @@ export class PostRepository {
     this.logger.done();
   }
 
-  async update(id: number, req: UpdatePostRequestDto): Promise<PostResponseDto> {
+  async update(id: number, req: UpdatePostRequestDto): Promise<Post> {
     this.logger.start();
     const post = await this.prisma.post.update({
       where: { id },
       data: req,
     });
     this.logger.done();
-    return new PostResponseDto(post); 
+    return post; 
+  }
+
+  async getUnpublishedPosts(): Promise<Post[]>{
+    this.logger.start();
+
+    const results = await this.prisma.post.findMany({
+      where: {
+        published: false
+      }
+    })
+
+    this.logger.done();
+    return results;
   }
 }

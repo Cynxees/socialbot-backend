@@ -13,5 +13,6 @@ import { FileModule } from 'src/file/file.module';
   ],
   controllers: [YoutubeController],
   providers: [YoutubeService],
+  exports: [YoutubeService]
 })
 export class YoutubeModule {}

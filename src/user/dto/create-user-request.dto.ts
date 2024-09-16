@@ -14,6 +14,9 @@ export class CreateUserRequestDto {
   @IsNotEmpty()
   password: string;
   
+  /**
+   * @example user
+   */
   @IsString()
   @IsNotEmpty()
   role: Role;
