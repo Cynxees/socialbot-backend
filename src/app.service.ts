@@ -47,6 +47,8 @@ export class AppService {
           💪😎 👉 <a href='api'> api</a>
           <br>
           🤓📄  👉<a href='terms'> Terms of Service</a>
+          <br>
+          👀📄  👉<a href='policy'> Privacy Policy</a>
         </div>
       </body>
       </html>
