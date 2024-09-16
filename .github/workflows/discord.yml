@@ -43,6 +43,6 @@ jobs:
           echo "WEBHOOK URL: $DISCORD_WEBHOOK_URL"
 
           curl -H "Content-Type: application/json" \
-          -d "{\"username\": $ESCAPED_AUTHOR, \"content\": \"$CONTENT\"}" \
+          -d "{\"username\": $ESCAPED_AUTHOR, \"content\": \"test\"}" \
           $DISCORD_WEBHOOK_URL
         
