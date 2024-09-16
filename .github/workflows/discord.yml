@@ -37,6 +37,10 @@ jobs:
           echo "Escaped PR_NUMBER: $ESCAPED_NUMBER"
           echo "Escaped PR_DESCRIPTION: $ESCAPED_DESCRIPTION"
 
+          CONTENT="📢 **Pull Request #$ESCAPED_NUMBER Merged**\n\n# Title: $ESCAPED_TITLE\n**Author:** $ESCAPED_AUTHOR\n**URL:** $ESCAPED_URL\n**DESCRIPTION:** $ESCAPED_DESCRIPTION\"
+          echo "CONTENT: $CONTENT"
+          echo "WEBHOOK URL: $DISCORD_WEBHOOK_URL"
+
           curl -H "Content-Type: application/json" \
-          -d "{\"username\": $ESCAPED_AUTHOR, \"content\": \"📢 **Pull Request #$ESCAPED_NUMBER Merged**\n\n# Title: $ESCAPED_TITLE\n**Author:** $ESCAPED_AUTHOR\n**URL:** $ESCAPED_URL\n**DESCRIPTION:** $ESCAPED_DESCRIPTION\"}" \
+          -d "{\"username\": $ESCAPED_AUTHOR, \"content\": \$CONTENT}" \
           $DISCORD_WEBHOOK_URL
