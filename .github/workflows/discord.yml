@@ -37,7 +37,7 @@ jobs:
           echo "Escaped PR_NUMBER: $ESCAPED_NUMBER"
           echo "Escaped PR_DESCRIPTION: $ESCAPED_DESCRIPTION"
           
-          CONTENT="📢 **Pull Request #$ESCAPED_NUMBER Merged**\u200B\u200B# Title: $ESCAPED_TITLE\u200B**Author:** $ESCAPED_AUTHOR\u200B**URL:** $ESCAPED_URL\u200B**DESCRIPTION:** $ESCAPED_DESCRIPTION"
+          CONTENT=$'📢 **Pull Request #'"$ESCAPED_NUMBER"' Merged**\n\n# Title: '"$ESCAPED_TITLE"'\n**Author:** '"$ESCAPED_AUTHOR"'\n**URL:** '"$ESCAPED_URL"'\n**DESCRIPTION:** '"$ESCAPED_DESCRIPTION"''
 
           echo "CONTENT: $CONTENT"
           echo "WEBHOOK URL: $DISCORD_WEBHOOK_URL"
