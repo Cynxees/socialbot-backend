@@ -48,5 +48,5 @@ jobs:
             docker pull ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
             docker stop backend
             docker container prune -f
-            docker run -d -e NODE_ENV=production --network backend-network --restart=always --name backend -p 3000:3000 ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
+            docker run -d -e NODE_ENV=production --network backend-network --restart=always --name backend -p 3000:3000 ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest node --max-old-space-size=512 dist/src/main.js
           EOF
