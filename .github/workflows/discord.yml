@@ -18,6 +18,13 @@ jobs:
           PR_URL="${{ github.event.pull_request.html_url }}"
           PR_NUMBER="${{ github.event.pull_request.number }}"
           PR_DESCRIPTION="${{ github.event.pull_request.body }}"
+
+          ESCAPED_TITLE=$(echo "$PR_TITLE" | jq -Rr @json)
+          ESCAPED_AUTHOR=$(echo "$PR_AUTHOR" | jq -Rr @json)
+          ESCAPED_URL=$(echo "$PR_URL" | jq -Rr @json)
+          ESCAPED_NUMBER=$(echo "$PR_NUMBER" | jq -Rr @json)
+          ESCAPED_DESCRIPTION=$(echo "$PR_DESCRIPTION" | jq -Rr @json)
+
           curl -H "Content-Type: application/json" \
-          -d "{\"username\": \"$PR_AUTHOR\", \"content\": \"📢 **Pull Request #$PR_NUMBER Merged**\n\n# Title: $PR_TITLE\n**Author:** $PR_AUTHOR\n**URL:** $PR_URL\n**DESCRIPTION:** $PR_DESCRIPTION\"}" \
+          -d "{\"username\": $ESCAPED_AUTHOR, \"content\": \"📢 **Pull Request #$ESCAPED_NUMBER Merged**\n\n# Title: $ESCAPED_TITLE\n**Author:** $ESCAPED_AUTHOR\n**URL:** $ESCAPED_URL\n**DESCRIPTION:** $ESCAPED_DESCRIPTION\"}" \
           $DISCORD_WEBHOOK_URL
