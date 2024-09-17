@@ -22,7 +22,7 @@ export class GoogleUserRepository {
     return googleUsers;
   }
 
-  async findOne(id: number): Promise<GoogleUser>{
+  async findOne(id: number): Promise<GoogleUser | null>{
     this.logger.start();
     this.logger.log(`finding google user with id ${id}`);
 

@@ -8,6 +8,10 @@ export class CreateGoogleUserRequest {
   accessToken: string;
 
   @IsString()
+  @IsNotEmpty()
+  refreshToken: string;
+
+  @IsString()
   @IsEnum(BearerToken)
   @IsNotEmpty()
   tokenType: BearerToken;

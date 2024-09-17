@@ -33,6 +33,9 @@ export class GoogleSchema {
 
   @IsString()
   GOOGLE_OAUTH_CLIENT_SECRET: string;
+
+  @IsString()
+  GOOGLE_OAUTH_REDIRECT_URI: string;
 }
 
 export class AwsSchema {

@@ -29,6 +29,7 @@ enum Role {
 
 model GoogleUser {
   id          Int         @id @default(autoincrement())
+  refreshToken String
   accessToken String
   tokenType   BearerToken
   expiresIn   DateTime

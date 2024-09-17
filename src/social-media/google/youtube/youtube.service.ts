@@ -22,7 +22,7 @@ async getYoutubeProfile(currentUser: JwtUser): Promise<YoutubeProfileResponseDto
     this.logger.start();
 
     this.logger.log('getting OAuth2 client');
-    const oAuth2Client = await this.googleUserService.getOauthClient(currentUser);
+    const oAuth2Client = await this.googleUserService.getAuthenticatedOAuthClient(currentUser);
 
     this.logger.log('fetching YouTube channel');
     const response = await this.youtubeApi.channels.list({
@@ -48,7 +48,7 @@ async getYoutubeProfile(currentUser: JwtUser): Promise<YoutubeProfileResponseDto
     this.logger.start();
 
     this.logger.log('getting OAuth2 client');
-    const oAuth2Client = await this.googleUserService.getOauthClient(currentUser);
+    const oAuth2Client = await this.googleUserService.getAuthenticatedOAuthClient(currentUser);
 
     this.logger.log(`getting video`);
     const response = await this.fileService.getFileObject(fileId);

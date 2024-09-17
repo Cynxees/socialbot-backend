@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
 import { GoogleCallbackRequestDto } from './dto/google-callback-request.dto';
 import { GoogleUser } from '@prisma/client';
@@ -8,6 +8,9 @@ import { PrismaService } from 'src/_infrastructure/prisma/prisma.service';
 import { UserService } from 'src/user/user.service';
 import { google } from 'googleapis';
 import { OAuth2Client } from 'google-auth-library';
+import { isEmpty } from 'class-validator';
+import { ConfigService } from '@nestjs/config';
+import { ConfigSchema } from 'src/config/config.schema';
 
 @Injectable()
 export class GoogleUserService {
@@ -17,14 +20,32 @@ export class GoogleUserService {
     private readonly googleUserRepository: GoogleUserRepository,
     private readonly prisma: PrismaService,
     private readonly userService: UserService,
+    private readonly configService: ConfigService
   ){}
 
-  async getOauthClient(currentUser: JwtUser): Promise<OAuth2Client> {
+  get oAuthClient(): OAuth2Client {
+    this.logger.start();
+
+    const config = this.configService.getOrThrow<ConfigSchema['GOOGLE']>('GOOGLE')
+
+    const oAuthClient = new google.auth.OAuth2({
+      clientId: config.GOOGLE_OAUTH_CLIENT_ID,
+      clientSecret: config.GOOGLE_OAUTH_CLIENT_SECRET,
+      redirectUri: config.GOOGLE_OAUTH_REDIRECT_URI
+    });
+
+    this.logger.done();
+    return oAuthClient;
+  }
+
+  async getAuthenticatedOAuthClient(currentUser: JwtUser): Promise<OAuth2Client> {
     this.logger.start();
     this.logger.log('getting user');
     const user = await this.userService.findByIdOrThrow(currentUser.id);
 
     const accessToken = user.googleUser?.accessToken;
+    const refreshToken = user.googleUser?.refreshToken;
+    
     if(!accessToken) {
       const err = 'Google Access Token Not Found'
       this.logger.error(err);
@@ -32,25 +53,40 @@ export class GoogleUserService {
     }
 
     this.logger.log('creating OAuth2 client');
-    const oauth2Client = new google.auth.OAuth2();
-    oauth2Client.setCredentials({ access_token: accessToken });
+    const oauth2Client = this.oAuthClient;
+    oauth2Client.setCredentials({ access_token: accessToken, refresh_token: refreshToken });
 
     this.logger.done();
     return oauth2Client;
   }
 
-  async processCallback(data: GoogleCallbackRequestDto, user: JwtUser): Promise<GoogleUser>{
-    this.logger.start();    
+  async processCallback(data: GoogleCallbackRequestDto, jwtUser: JwtUser): Promise<GoogleUser>{
+    this.logger.start();
 
-    console.debug(user);
+    this.logger.log('getting access token from authorization code');
+    const { tokens } = await this.oAuthClient.getToken(data.authorizationCode).catch((err) => {
+      this.logger.error('Invalid Google OAuth authorization code');
+      throw new UnauthorizedException('Invalid Google OAuth Authorization Code')
+    });
+    
+    this.logger.log('getting google user');
+    const user = await this.userService.findByIdOrThrow(jwtUser.id);
     let googleUser = user.googleUserId ? await this.googleUserRepository.findOne(user.googleUserId) : null;
-
-    if(!googleUser){
-
+    
+    const {authorizationCode, ...payload} = data;
+    if(isEmpty(googleUser)){
+      
       this.logger.log('creating new google user');
       googleUser = await this.prisma.$transaction(async (tx) => {
+        
 
-        const googleUser = await tx.googleUser.create({data})
+        const googleUser = await tx.googleUser.create({
+          data: {
+            ...payload,
+            accessToken: tokens.access_token,
+            refreshToken: tokens.refresh_token
+          }
+        })
         await tx.user.update({
           where: { id: user.id },
           data: { googleUserId: googleUser.id }
@@ -68,7 +104,7 @@ export class GoogleUserService {
       });
       
       googleUser = await this.googleUserRepository.update(googleUser.id, {
-        ...data,
+        ...payload,
         scopes: googleUser.scopes
       });
 
