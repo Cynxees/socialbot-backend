@@ -5,12 +5,18 @@ import { IsArray, IsDate, IsEnum, IsString } from 'class-validator';
 
 export class GoogleCallbackRequestDto {
   @IsString()
-  accessToken: string;
+  authorizationCode: string;
 
+  /**
+   * @example bearer
+   */
   @IsEnum(BearerToken)
   @IsString()
   tokenType: BearerToken;
 
+  /**
+   * @example 3600
+   */
   @Transform(({ value }) => {
     const seconds = parseInt(value, 10);
     return new Date(Date.now() + seconds * 1000);
@@ -18,6 +24,9 @@ export class GoogleCallbackRequestDto {
   @IsDate()
   expiresIn: Date;
 
+  /**
+   * @example 'Youtube_Profile'
+   */
   @ApiProperty({
     type: 'string',
     description: 'Seperated with space'
