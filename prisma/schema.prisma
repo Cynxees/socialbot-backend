@@ -14,7 +14,7 @@ model User {
   displayName  String?
   password     String
   role         Role        @default(user)
-  posts        Post[]
+  postGroups   PostGroup[]
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   googleUserId Int?        @unique
@@ -43,34 +43,54 @@ enum BearerToken {
 
 // POST
 model Post {
-  id             Int       @default(autoincrement()) @id
-  title          String
-  caption        String?
-  location       String?
-  music          String?
-  published      Boolean?  @default(false)
-  scheduledDate  DateTime?
-  tags           String[]  @default([])
-  hashtags       String[]  @default([])
-  author         User     @relation(fields: [authorId], references: [id])
-  authorId       Int
-  fileIds        Int[]     @default([])
+  id            Int       @id @default(autoincrement())
+  title         String
+  description   String?
+  location      String?
+  published     Boolean   @default(false)
+  tags          String[]  @default([])
+  hashtags      String[]  @default([])
+  postGroupId   Int
+  postGroup     PostGroup @relation(fields: [postGroupId], references: [id])
+  
 
-  @@index([scheduledDate])     
-  @@index([title])     
-  @@index([authorId])  
-  @@index([scheduledDate, authorId])
+  @@index([title])
+
+}
+
+model PostGroup {
+  id            Int      @id @default(autoincrement())
+  authorId      Int
+  scheduledDate DateTime
+  isPublished   Boolean  @default(false)
+  fileIds       Int[] // Array of File IDs (if needed at the group level)
+  Post          Post[]
+  author        User @relation(fields: [authorId], references: [id])
 }
 
 model File {
-  id        Int        @default(autoincrement()) @id
+  id        Int       @id @default(autoincrement())
   url       String
-  mediaType MediaType  @default(image)
+  mediaType MediaType @default(image)
 }
 
 enum MediaType {
   image
   video
-  both
 }
 
+enum Destination {
+  INSTAGRAM_POST
+  INSTAGRAM_REEL
+  TIKTOK_SLIDES
+  TIKTOK_VIDEO
+  YOUTUBE_SHORT
+  YOUTUBE_VIDEO
+}
+
+enum ContentType {
+  SINGLE_SHORT_FORM_CONTENT
+  SINGLE_VIDEO_CONTENT
+  SINGLE_IMAGE_CONTENT
+  MULTIPLE_MIXED_CONTENT
+}

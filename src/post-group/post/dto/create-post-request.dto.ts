@@ -1,18 +1,19 @@
-import { IsNotEmpty, IsOptional, IsString, IsBoolean, IsArray, IsDate, IsInt, Validate } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsBoolean, IsArray, IsDate, IsInt, Validate, IsNumber } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsValidTag, FileExistsValidator } from '../validators/post.validators';
+import { IsValidTag, FileExistsValidator } from "../validators/post.validators"
 import { Transform } from 'class-transformer';
-export class CreatePostRequestDto {
+
+export class CreatePostRequestDto{
   
   @ApiProperty({ description: 'Title of the post' })
   @IsString()
   @IsNotEmpty()
   title: string;
 
-  @ApiProperty({ description: 'Caption of the post', required: false })
+  @ApiProperty({ description: 'Description of the post', required: false })
   @IsString()
   @IsOptional()
-  caption?: string;
+  description?: string;
 
 
   @ApiProperty({ description: 'Location of the post', required: false })
@@ -52,6 +53,7 @@ export class CreatePostRequestDto {
 
   @ApiProperty({ description: 'Author ID of the post', required: false })
   @IsOptional()
+  @IsNumber()
   authorId: number;
 
 
@@ -60,4 +62,8 @@ export class CreatePostRequestDto {
   @IsInt({ each: true })
   @Validate(FileExistsValidator, { each: true })
   fileIds?: number[] | null;
+
+  @IsNumber()
+  postgroupId: number;
+
 }

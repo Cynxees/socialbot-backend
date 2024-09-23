@@ -1,7 +1,7 @@
 export enum PostSortEnum {
     ID = 'id',
     TITLE = 'title',
-    CAPTION = 'caption',
+    DESCRIPTION = 'description',
     MEDIA_TYPE = 'mediaType',
     LOCATION = 'location',
     MUSIC = 'music',
@@ -17,7 +17,7 @@ export enum PostSortEnum {
   export enum PostFilterEnum {
     ID = 'id',
     TITLE = 'title',
-    CAPTION = 'caption',
+    DESCRIPTION = 'description',
     MEDIA_TYPE = 'mediaType',
     LOCATION = 'location',
     MUSIC = 'music',

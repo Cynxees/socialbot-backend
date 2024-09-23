@@ -29,7 +29,7 @@ export class CaslAbilityFactory {
 
     if(user.role == Role.user){
 
-      can(Action.Manage, 'Post', {authorId: user.id});
+      can(Action.Manage, 'PostGroup', {authorId: user.id});
       can(Action.Manage, 'User',{id: user.id});
       cannot(Action.Read, 'User', 'password')
 

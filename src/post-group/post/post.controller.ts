@@ -63,9 +63,5 @@ export class PostController {
     return res;
   }
 
-  @Get(':id/files')
-  async getFilesForPost(@Param('id') id: string): Promise<File[]> {
-    const postId = parseInt(id, 10);
-    return this.postsService.getFilesForPost(postId);
   }
-}
+

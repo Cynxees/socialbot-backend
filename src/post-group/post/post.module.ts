@@ -9,6 +9,7 @@ import { FileExistsValidator } from './validators/post.validators';
 import { SocialMediaModule } from 'src/social-media/social-media.module';
 import { UserModule } from 'src/user/user.module';
 import { YoutubeModule } from 'src/social-media/google/youtube/youtube.module';
+import { PostGroupModule } from '../post-group.module';
 @Module({
   imports: [UserModule, YoutubeModule],
   controllers: [PostController],

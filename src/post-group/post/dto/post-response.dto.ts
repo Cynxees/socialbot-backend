@@ -4,16 +4,14 @@ export class PostResponseDto implements Partial<Post> {
 
   id: number;
   title: string;
-  caption: string;
+  description: string;
   location: string;
   music?: string;
   published?: boolean;
-  scheduledDate: Date;
   tags?: string[];
   hashtags?: string[];
-  authorId: number;
   fileIds?: number[];
-
+  postGroupId?: number;
   constructor(post: Partial<Post>) {
     Object.assign(this,post)
   }

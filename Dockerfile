@@ -2,7 +2,7 @@ FROM node:18 AS base
 WORKDIR /usr/src/app
 
 FROM base AS install
-COPY package.json /usr/src/app/
+COPY package*.json /usr/src/app/
 RUN npm install 
 
 FROM base AS copy

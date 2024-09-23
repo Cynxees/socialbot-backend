@@ -85,7 +85,7 @@ export class UserRepository {
         username: true,
         role: true,
         createdAt: true,
-        posts: true,
+        postGroups: true,
         updatedAt: true,
         googleUserId: true,
         googleUser: true,

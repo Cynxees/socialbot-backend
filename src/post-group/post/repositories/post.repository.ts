@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/_infrastructure/prisma/prisma.service';
-import { CreatePostRequestDto } from '../dto/create-post-request.dto';
-import { UpdatePostRequestDto } from '../dto/update-post-request.dto';
+import { CreatePostRequestDto } from '../dto/create-post-request.dto'; 
+import { UpdatePostRequestDto } from '../dto/update-post-request.dto'; 
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
 import { Post, Prisma } from '@prisma/client';
 import { PaginatePostRequestDto } from '../dto/paginate-post-request.dto'; 
@@ -16,7 +16,7 @@ export class PostRepository {
   async createPost(params: { data: CreatePostRequestDto }): Promise<Post> {
     this.logger.start();
     const { data } = params;
-    const post = await this.prisma.post.create({ data:data });
+    const post = await this.prisma.post.create({ data: {...data,postGroup: {connect:{id:data.postgroupId}}} });
     this.logger.done();
     return post; 
   }

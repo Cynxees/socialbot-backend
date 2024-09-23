@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsBoolean, IsArray, IsDate, IsInt, Validate } from 'class-validator';
+import { IsOptional, IsString, IsBoolean, IsArray, IsDate, IsInt, Validate, IsNumber } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsValidTag, FileExistsValidator } from '../validators/post.validators';
 import { Transform } from 'class-transformer';
@@ -9,10 +9,10 @@ export class UpdatePostRequestDto {
   @IsOptional()
   title?: string;
 
-  @ApiProperty({ description: 'Caption of the post', required: false })
+  @ApiProperty({ description: 'Description of the post', required: false })
   @IsString()
   @IsOptional()
-  caption?: string;
+  description?: string;
 
 
   @ApiProperty({ description: 'Location of the post', required: false })
@@ -59,4 +59,7 @@ export class UpdatePostRequestDto {
   @IsInt({ each: true })
   @Validate(FileExistsValidator, { each: true })
   fileIds?: number[] | null;
+
+  @IsNumber()
+  postGroupId: number
 }
