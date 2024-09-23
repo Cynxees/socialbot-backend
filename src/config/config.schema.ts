@@ -1,8 +1,9 @@
 import { plainToInstance } from 'class-transformer';
 import { validateSync } from 'class-validator';
-import { AwsSchema, DatabaseSchema, GoogleSchema, MetaSchema, SecretSchema } from './env.schema';
+import { AppSchema, AwsSchema, DatabaseSchema, GoogleSchema, MetaSchema, SecretSchema } from './env.schema';
 
 export class ConfigSchema {
+  APP: AppSchema;
   DATABASE: DatabaseSchema;
   SECRET: SecretSchema;
   META: MetaSchema;
@@ -12,6 +13,7 @@ export class ConfigSchema {
 
 export function validate(config: Record<string, unknown>) {
   
+  const appConfig = plainToInstance(AppSchema, config, { enableImplicitConversion: true });
   const databaseConfig = plainToInstance(DatabaseSchema, config, { enableImplicitConversion: true });
   const secretConfig = plainToInstance(SecretSchema, config, { enableImplicitConversion: true });
   const metaConfig = plainToInstance(MetaSchema, config, { enableImplicitConversion: true });
@@ -19,6 +21,7 @@ export function validate(config: Record<string, unknown>) {
   const awsConfig = plainToInstance(AwsSchema, config, { enableImplicitConversion: true });
 
   const errors = [
+    ...validateSync(appConfig, { skipMissingProperties: false }),
     ...validateSync(databaseConfig, { skipMissingProperties: false }),
     ...validateSync(secretConfig, { skipMissingProperties: false }),
     ...validateSync(metaConfig, { skipMissingProperties: false }),
@@ -31,6 +34,7 @@ export function validate(config: Record<string, unknown>) {
   }
 
   return {
+    APP: appConfig,
     DATABASE: databaseConfig,
     SECRET: secretConfig,
     META: metaConfig,
