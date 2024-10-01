@@ -1,51 +1,70 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../prisma.service'; // Assuming Prisma is being used
-import { PostGroupDto } from './dto/post-group.dto';
-import { CreatePostGroupDto } from './dto/create-post-group-request.dto';
-import { UpdatePostGroupDto } from './dto/update-post-group-request.dto';
+import { CreatePostGroupRequestDto } from './dto/create-post-group-request.dto';
+import { UpdatePostGroupRequestDto } from './dto/update-post-group-request.dto';
+import { PostGroupResponseDto } from './dto/post-group-response.dto';
+import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
+import { PostGroupRepository } from './repositories/post-group.repository';
+import { PostGroup } from '@prisma/client'; // Assuming you have PostGroup type
 
 @Injectable()
 export class PostGroupService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private readonly postGroupRepository: PostGroupRepository,
+    private readonly logger: CustomLoggerService,
+  ) {}
 
-  async create(createPostGroupDto: CreatePostGroupDto): Promise<PostGroupDto> {
-    const postGroup = await this.prisma.postGroup.create({
+  async create(createPostGroupDto: CreatePostGroupRequestDto): Promise<PostGroupResponseDto> {
+    this.logger.start();
+    this.logger.log('Creating post group');
+
+    const postGroup = await this.postGroupRepository.create({
       data: {
         authorId: createPostGroupDto.authorId,
         scheduledDate: createPostGroupDto.scheduledDate,
         isPublished: createPostGroupDto.isPublished,
-        postIds: createPostGroupDto.postIds,
         fileIds: createPostGroupDto.fileIds,
-        musicId: createPostGroupDto.musicId,
+        postIds: createPostGroupDto.postIds, // Ensure postIds are included
       },
     });
-    return new PostGroupDto(postGroup);
+
+    this.logger.done();
+    return new PostGroupResponseDto(postGroup);
   }
 
-  async findById(id: number): Promise<PostGroupDto> {
-    const postGroup = await this.prisma.postGroup.findUnique({ where: { id } });
+  async findById(id: number): Promise<PostGroupResponseDto> {
+    this.logger.start();
+    const postGroup = await this.postGroupRepository.findById(id);
     if (!postGroup) {
       throw new NotFoundException(`PostGroup with id ${id} not found`);
     }
-    return new PostGroupDto(postGroup);
+    this.logger.done();
+    return new PostGroupResponseDto(postGroup);
   }
 
-  async update(id: number, updatePostGroupDto: UpdatePostGroupDto): Promise<PostGroupDto> {
-    const postGroup = await this.prisma.postGroup.update({
-      where: { id },
-      data: {
-        authorId: updatePostGroupDto.authorId,
-        scheduledDate: updatePostGroupDto.scheduledDate,
-        isPublished: updatePostGroupDto.isPublished,
-        postIds: updatePostGroupDto.postIds,
-        fileIds: updatePostGroupDto.fileIds,
-        musicId: updatePostGroupDto.musicId,
-      },
+  async update(id: number, updatePostGroupDto: UpdatePostGroupRequestDto): Promise<PostGroupResponseDto> {
+    this.logger.start();
+    this.logger.log('Finding post group');
+
+    const postGroup = await this.postGroupRepository.update(id, {
+      authorId: updatePostGroupDto.authorId,
+      scheduledDate: updatePostGroupDto.scheduledDate,
+      isPublished: updatePostGroupDto.isPublished,
+      fileIds: updatePostGroupDto.fileIds,
+      postIds: updatePostGroupDto.postIds, // Ensure postIds are included
     });
-    return new PostGroupDto(postGroup);
+
+    this.logger.done();
+    return new PostGroupResponseDto(postGroup);
   }
 
   async delete(id: number): Promise<void> {
-    await this.prisma.postGroup.delete({ where: { id } });
+    this.logger.start();
+    this.logger.log('Finding post group to delete');
+    await this.findById(id);
+    this.logger.log('Deleting post group');
+    await this.postGroupRepository.delete(id);
+    this.logger.done();
   }
 }
+
+

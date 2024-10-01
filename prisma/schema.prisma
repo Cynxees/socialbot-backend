@@ -64,7 +64,7 @@ model PostGroup {
   scheduledDate DateTime
   isPublished   Boolean  @default(false)
   fileIds       Int[] // Array of File IDs (if needed at the group level)
-  Post          Post[]
+  posts          Post[]
   author        User @relation(fields: [authorId], references: [id])
 }
 

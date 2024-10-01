@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/_infrastructure/prisma/prisma.service';
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
 import { Prisma, PostGroup } from '@prisma/client';
-import { CreatePostGroupRequestDto } from '../dto/create-post-group-request.dto'; 
+import { CreatePostGroup 
 import { UpdatePostGroupRequestDto } from '../dto/update-post-group-request.dto'; 
 import { PaginatePostGroupRequestDto } from '../dto/paginate-post-group-request.dto'; 
 

@@ -10,7 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { SocialMediaModule } from './social-media/social-media.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { PostGroupModule } from './post-group/post-group.module';
-
+import { PostModule } from './post-group/post/post.module';
 @Module({
   imports: [
     InfrastructureModule,
@@ -19,6 +19,7 @@ import { PostGroupModule } from './post-group/post-group.module';
     CommonModule,
     UserModule,
     PostGroupModule,
+    PostModule,
     FileModule,
     AuthModule,
     SocialMediaModule

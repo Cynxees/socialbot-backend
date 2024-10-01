@@ -91,7 +91,7 @@ export class GoogleUserService {
           where: { id: user.id },
           data: { googleUserId: googleUser.id }
         });
-
+              
         return googleUser;
       });
 
