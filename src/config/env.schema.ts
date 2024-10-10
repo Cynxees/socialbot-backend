@@ -2,7 +2,19 @@ import { IsString, IsNumber } from "class-validator";
 
 export class DatabaseSchema {
   @IsString()
-  DATABASE_URL: string;
+  DATABASE_HOST: string
+  
+  @IsNumber()
+  DATABASE_PORT: number
+
+  @IsString()
+  DATABASE_USERNAME: string
+
+  @IsString()
+  DATABASE_PASSWORD: string
+
+  @IsString()
+  DATABASE_NAME: string
 }
 
 export class SecretSchema {

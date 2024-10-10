@@ -18,10 +18,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "db:migration:deploy": "prisma migrate deploy",
-    "db:migration:create": "prisma migrate dev --name ",
-    "db:migration:show": "prisma migrate status ",
-    "db:seed": "prisma db seed"
+    "db:migration:deploy": "",
+    "db:migration:create": "cd ./src/_infrastructure/database/migration && typeorm migration:create",
+    "db:migration:run": "cd ./dist/src/_infrastructure/database && typeorm migration:run -d data.source.js",
+    "db:migration:down": "cd ./dist/src/_infrastructure/database && typeorm migration:revert -d data.source.js",
+    "db:migration:show": "cd ./dist/src/_infrastructure/database && typeorm migration:show -d data.source.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.632.0",
@@ -37,6 +38,7 @@
     "@nestjs/platform-express": "^10.4.1",
     "@nestjs/schedule": "^4.1.0",
     "@nestjs/swagger": "^7.4.0",
+    "@nestjs/typeorm": "^10.0.2",
     "@prisma/client": "^5.18.0",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
@@ -51,8 +53,10 @@
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
+    "pg": "^8.13.0",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@compodoc/compodoc": "^1.1.25",

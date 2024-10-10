@@ -15,4 +15,4 @@ RUN npx prisma generate && npm run build
 
 # auto deploy database. then,
 # start depends on NODE_ENV [ need to specify -e NODE_ENV=??? during deployment ] 
-CMD [ "/bin/sh", "-c", "npm run db:migration:deploy && if [ \"$NODE_ENV\" = \"production\" ]; then npm run start; else npm run start:dev; fi" ]
+CMD [ "/bin/sh", "-c", "if [ \"$NODE_ENV\" = \"production\" ]; then npm run start; else npm run start:dev; fi" ]
