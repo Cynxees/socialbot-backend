@@ -22,10 +22,6 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set default.region ${{ secrets.AWS_REGION }}
           aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
-      
-      - name: Rename .env.example to .env
-        run: |
-          mv .env.example .env
 
       - name: Build Docker image
         run: |
@@ -48,5 +44,5 @@ jobs:
             docker pull ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
             docker stop backend
             docker container prune -f
-            docker run -d -e NODE_ENV=production --network backend-network --restart=always --name backend -p 3000:3000 ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest node --max-old-space-size=512 dist/src/main.js
+            docker run -d -e NODE_ENV=production --env-file socialbot.env --restart=always --name backend -p 3000:3000 ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest node --max-old-space-size=512 dist/src/main.js
           EOF
