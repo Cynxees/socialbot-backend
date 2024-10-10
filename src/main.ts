@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { CustomLoggerService } from './_infrastructure/logger/logger.service';
 import { ClassSerializerInterceptor, UnprocessableEntityException, ValidationPipe } from '@nestjs/common';
 import { useContainer } from 'class-validator';
+import { HttpExceptionFilter } from './_infrastructure/filter/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, 
@@ -26,6 +27,7 @@ async function bootstrap() {
     }
   
   }));
+  app.useGlobalFilters(new HttpExceptionFilter());
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   const config = new DocumentBuilder()
