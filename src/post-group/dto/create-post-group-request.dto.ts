@@ -11,13 +11,10 @@ export class CreatePostGroupRequestDto {
   isPublished: boolean;
 
   @IsArray()
-  postIds: number[];
+  postIds?: number[];
 
   @IsArray()
   @IsOptional()
   fileIds?: number[];
 
-  @IsNumber()
-  @IsOptional()
-  musicId?: number;
 }

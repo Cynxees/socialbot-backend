@@ -50,8 +50,8 @@ model Post {
   published     Boolean   @default(false)
   tags          String[]  @default([])
   hashtags      String[]  @default([])
-  postGroupId   Int
-  postGroup     PostGroup @relation(fields: [postGroupId], references: [id])
+  postGroupId   Int?
+  postGroup     PostGroup? @relation(fields: [postGroupId], references: [id])
   
 
   @@index([title])
@@ -63,10 +63,14 @@ model PostGroup {
   authorId      Int
   scheduledDate DateTime
   isPublished   Boolean  @default(false)
-  fileIds       Int[] // Array of File IDs (if needed at the group level)
-  posts          Post[]
-  author        User @relation(fields: [authorId], references: [id])
+  fileIds       Int[]    @default([])
+  posts         Post[]
+  author        User     @relation(fields: [authorId], references: [id])
 }
+
+
+
+
 
 model File {
   id        Int       @id @default(autoincrement())

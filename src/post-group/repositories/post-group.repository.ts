@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/_infrastructure/prisma/prisma.service';
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
 import { Prisma, PostGroup } from '@prisma/client';
-import { CreatePostGroup 
+import { CreatePostGroupRequestDto } from '../dto/create-post-group-request.dto';
 import { UpdatePostGroupRequestDto } from '../dto/update-post-group-request.dto'; 
 import { PaginatePostGroupRequestDto } from '../dto/paginate-post-group-request.dto'; 
 
@@ -17,18 +17,13 @@ export class PostGroupRepository {
     this.logger.start();
     const { data } = params;
 
-    // Ensure postIds and musicId are provided
-    if (!data.postIds || data.postIds.length === 0 || !data.musicId) {
-      throw new Error('postIds and musicId cannot be empty');
-    }
-
+    // Creating a PostGroup without handling postIds if decoupled
     const postGroup = await this.prisma.postGroup.create({
       data: {
         authorId: data.authorId,
         scheduledDate: data.scheduledDate,
         isPublished: data.isPublished,
-        fileIds: data.fileIds || [], // Allow empty array if no fileIds
-        posts: { connect: data.postIds.map(id => ({ id })) }, // Connecting posts
+        fileIds: data.fileIds || [], // Handle fileIds as before
       }
     });
 
@@ -44,7 +39,6 @@ export class PostGroupRepository {
 
     const whereOption: Prisma.PostGroupWhereInput = {
       ...(filterBy ? { [filterBy]: search } : {}),
-      // Adjust filters according to your needs
     };
 
     const orderByOption: Prisma.PostGroupOrderByWithRelationInput = {
@@ -88,8 +82,8 @@ export class PostGroupRepository {
         authorId: req.authorId,
         scheduledDate: req.scheduledDate,
         isPublished: req.isPublished,
-        fileIds: req.fileIds || [], // Allow empty array
-        posts: { set: req.postIds.map(id => ({ id })) }, // Set posts
+        fileIds: req.fileIds || [], // Handle fileIds as before
+        // Remove postIds handling if decoupled
       }
     });
 

@@ -21,22 +21,12 @@ export class CreatePostRequestDto{
   @IsOptional()
   location?: string;
 
-  @ApiProperty({ description: 'Music associated with the post', required: false })
-  @IsString()
-  @IsOptional()
-  music?: string;
+  
 
   @ApiProperty({ description: 'Publication status', required: false, default: false })
   @IsBoolean()
   @IsOptional()
   published?: boolean;
-
-  @Transform(({ value}) => new Date(value))
-  @ApiProperty({ description: 'Date of the post' })
-  @IsDate()
-  @IsNotEmpty()
-  scheduledDate: Date;
-
 
   @ApiProperty({ description: 'Tags for the post', required: false })
   @IsArray()
@@ -50,18 +40,6 @@ export class CreatePostRequestDto{
   @IsOptional()
   @IsString({each: true})
   hashtags?: string[] | null;
-
-  @ApiProperty({ description: 'Author ID of the post', required: false })
-  @IsOptional()
-  @IsNumber()
-  authorId: number;
-
-
-  @IsOptional()
-  @IsArray()
-  @IsInt({ each: true })
-  @Validate(FileExistsValidator, { each: true })
-  fileIds?: number[] | null;
 
   @IsNumber()
   postgroupId: number;
