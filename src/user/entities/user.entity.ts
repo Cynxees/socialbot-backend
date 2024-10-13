@@ -1,15 +1,33 @@
-import { $Enums, User } from "@prisma/client";
-import { GoogleUserEntity } from '../../social-media/google/google-user/entities/google-user.entity';
+import { Role } from 'src/common/enums/auth.enums';
+import { GoogleUser } from '../../social-media/google/google-user/entities/google-user.entity';
+import { Column, CreateDateColumn, Entity, JoinColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
-export class UserEntity implements User  {
+@Entity()
+export class User {
+  @PrimaryGeneratedColumn()
   id: number;
+
+  @Column()
   displayName: string;
+
+  @Column({ unique: true })
   username: string;
+
+  @Column()
   password: string;
-  role: $Enums.Role;
+
+  @Column({ type: 'enum', enum: Role })
+  role: Role;
+
+  @CreateDateColumn()
   createdAt: Date;
+
+  @UpdateDateColumn()
   updatedAt: Date;
-  
+
+  @Column()
   googleUserId: number;
-  googleUser: GoogleUserEntity;
+
+  @JoinColumn()
+  googleUser: GoogleUser;
 }

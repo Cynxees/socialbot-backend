@@ -29,28 +29,11 @@ services:
       - db 
     volumes:
         - .:/usr/src/app 
-        - ./node_modules:/usr/src/app/node_modules
-    networks:
-      - backend-network
-
-  dbeaver:
-    image: dbeaver/cloudbeaver
-    # restart: always 
-    container_name: bvr
-    environment:
-      - CB_ADMIN_NAME=dbeaver
-      - CB_ADMIN_PASSWORD=Dbeaver1
-    ports: 
-      - '5050:8978' 
-    depends_on: 
-        - db
     networks:
       - backend-network
 
 volumes:
   pgvolume:
-    driver: local
-  dbeaver:
     driver: local
 networks:
     backend-network:

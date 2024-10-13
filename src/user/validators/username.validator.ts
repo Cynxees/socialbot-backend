@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import {
-  ValidatorConstraint,
-  ValidatorConstraintInterface,
   ValidationArguments,
   ValidationOptions,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
   registerDecorator,
 } from 'class-validator';
-import { ValidatorEnum } from 'src/common/enums/common.enums';
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
+import { ValidatorEnum } from 'src/common/enums/common.enums';
 import { UserService } from '../user.service';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class UserValidationConstraint implements ValidatorConstraintInterface {
 
     this.logger.done();
     if (option === ValidatorEnum.UNIQUE) return !user;
-    if (option === ValidatorEnum.EXISTS) return !!user; 
+    if (option === ValidatorEnum.EXISTS) return !!user;
 
     return false;
   }
