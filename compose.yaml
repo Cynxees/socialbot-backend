@@ -16,19 +16,17 @@ services:
     networks:
       - backend-network
 
-  app: 
-    build: 
-      context: . 
-      dockerfile: Dockerfile 
-    container_name: app
-    environment: 
-      - NODE_ENV=development
-    ports: 
-      - '3000:3000' 
-    depends_on: 
-      - db 
+  app:
+    build:
+      context: .
+      target: development
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
     volumes:
-        - .:/usr/src/app 
+      - .:/usr/src/app
     networks:
       - backend-network
 
