@@ -1,5 +1,10 @@
 import { IsString, IsNumber } from "class-validator";
 
+export class AppSchema {
+  @IsString()
+  APP_NAME: string;
+}
+
 export class DatabaseSchema {
   @IsString()
   DATABASE_HOST: string
