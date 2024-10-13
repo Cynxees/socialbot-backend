@@ -23,7 +23,9 @@ import { DataSource } from 'typeorm';
           synchronize: true,
           autoLoadEntities: true,
           migrationsRun: config.DATABASE_MIGRATION_AUTO_RUN,
-          ssl: true,
+          ssl: {
+            rejectUnauthorized: false,
+          },
         };
       },
       async dataSourceFactory(options) {
