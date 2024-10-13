@@ -15,11 +15,7 @@ import { DataSource } from 'typeorm';
 
         return {
           type: 'postgres',
-          host: config.DATABASE_HOST,
-          port: config.DATABASE_PORT,
-          username: config.DATABASE_USERNAME,
-          password: config.DATABASE_PASSWORD,
-          database: config.DATABASE_NAME,
+          url: config.DATABASE_URL,
           entities: ['dist/**/*.entity{.ts,.js}'],
           migrations: [
             'dist/src/_infrastructure/database/migration/*{.ts,.js}',
@@ -30,8 +26,14 @@ import { DataSource } from 'typeorm';
         };
       },
       async dataSourceFactory(options) {
-        const datasource = new DataSource(options);
-        return datasource;
+        console.log('options', options);
+        try{
+          
+          const datasource = new DataSource(options);
+          return datasource;
+        }catch(err){
+          console.error('failed when configuring datasource: ', err);
+        }
       },
     }),
   ],

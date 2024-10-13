@@ -7,6 +7,10 @@ export class AppSchema {
 }
 
 export class DatabaseSchema {
+
+  @IsString()
+  DATABASE_URL: string;
+  
   @IsString()
   DATABASE_HOST: string
   
