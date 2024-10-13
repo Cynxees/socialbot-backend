@@ -11,7 +11,7 @@ COPY . .
 
 FROM base AS build
 COPY --from=copy /usr/src/app /usr/src/app
-RUN npx prisma generate && npm run build 
+RUN npm run build 
 
 # auto deploy database. then,
 # start depends on NODE_ENV [ need to specify -e NODE_ENV=??? during deployment ] 

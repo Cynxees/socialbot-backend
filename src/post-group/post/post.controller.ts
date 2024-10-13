@@ -6,10 +6,7 @@ import { PaginatePostRequestDto } from './dto/paginate-post-request.dto';
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
 import { PostResponseDto } from './dto/post-response.dto';
 import { UpdatePostRequestDto } from './dto/update-post-request.dto';
-import { Auth } from 'src/auth/decorators/auth.decorator';
-import { Permission } from 'src/common/enums/auth.enums';
-import { captureRejectionSymbol } from 'events';
-import { File } from '@prisma/client';
+
 @ApiTags('Post')
 @Controller('posts')
 @ApiBearerAuth()

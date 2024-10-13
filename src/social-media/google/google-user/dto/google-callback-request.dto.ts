@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BearerToken } from '@prisma/client';
+import { Token } from 'src/common/enums/token.enums';
 import { Transform } from 'class-transformer';
 import { IsArray, IsDate, IsEnum, IsString } from 'class-validator';
 
@@ -10,9 +10,9 @@ export class GoogleCallbackRequestDto {
   /**
    * @example bearer
    */
-  @IsEnum(BearerToken)
+  @IsEnum(Token)
   @IsString()
-  tokenType: BearerToken;
+  tokenType: Token;
 
   /**
    * @example 3600

@@ -1,25 +1,10 @@
-import { Injectable } from "@nestjs/common";
-import { User } from "@prisma/client";
-import { CustomLoggerService } from "src/_infrastructure/logger/logger.service";
-import { PrismaService } from "src/_infrastructure/prisma/prisma.service";
+import { Injectable } from '@nestjs/common';
+import { User } from 'src/user/entities/user.entity';
+import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
-export class AuthUserRepository {
-
-  constructor(
-    private readonly prisma: PrismaService,
-    private readonly logger: CustomLoggerService
-  ){}
-
-  async findOneByUsername(username: string): Promise<User> {
-    this.logger.start();
-
-    const user = await this.prisma.user.findFirst({
-      where: { username: username }
-    });
-
-    this.logger.done();
-    return user;
+export class AuthUserRepository extends Repository<User> {
+  constructor(private readonly ds: DataSource) {
+    super(User, ds.createEntityManager());
   }
-
 }

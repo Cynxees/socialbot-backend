@@ -29,7 +29,6 @@ services:
       - db 
     volumes:
         - .:/usr/src/app 
-        - ./node_modules:/usr/src/app/node_modules
     networks:
       - backend-network
 

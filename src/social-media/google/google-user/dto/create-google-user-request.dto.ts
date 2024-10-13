@@ -1,5 +1,5 @@
-import { BearerToken } from "@prisma/client";
 import { IsArray, IsDate, IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { Token } from "src/common/enums/token.enums";
 
 export class CreateGoogleUserRequest {
 
@@ -12,9 +12,9 @@ export class CreateGoogleUserRequest {
   refreshToken: string;
 
   @IsString()
-  @IsEnum(BearerToken)
+  @IsEnum(Token)
   @IsNotEmpty()
-  tokenType: BearerToken;
+  tokenType: Token;
   
   @IsDate()
   @IsNotEmpty()

@@ -1,41 +1,43 @@
-import { Injectable, NotFoundException} from '@nestjs/common';
-import { CreatePostRequestDto } from './dto/create-post-request.dto';
-import { UpdatePostRequestDto } from './dto/update-post-request.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
-import { PostRepository } from './repositories/post.repository';
-import { Post, File } from '@prisma/client';
+import { CreatePostRequestDto } from './dto/create-post-request.dto';
 import { PaginatePostRequestDto } from './dto/paginate-post-request.dto';
-
+import { UpdatePostRequestDto } from './dto/update-post-request.dto';
+import { Post } from './entities/post.entity';
+import { PostRepository } from './repositories/post.repository';
 
 @Injectable()
-export class PostService{
+export class PostService {
   constructor(
     private readonly postRepository: PostRepository,
     private readonly logger: CustomLoggerService,
-   
   ) {}
-
- 
 
   async create(data: CreatePostRequestDto): Promise<Post> {
     this.logger.start();
 
     this.logger.log('creating post');
-    const post = await this.postRepository.createPost({ data });
+    const post = await this.postRepository.save(data);
     this.logger.done();
     return post;
   }
 
   async paginate(params: PaginatePostRequestDto): Promise<Post[]> {
     this.logger.start();
-    const posts = await this.postRepository.paginatePost(params);
+
+    //TODO: implement pagination logic
+    const posts = await this.postRepository.find();
     this.logger.done();
     return posts;
   }
 
   async findOne(field: keyof Post, value: any): Promise<Post | null> {
     this.logger.start();
-    const post = await this.postRepository.findOne(field, value);
+    const post = await this.postRepository.findOne({
+      where: {
+        [field]: value,
+      },
+    });
     this.logger.done();
     return post;
   }
@@ -53,7 +55,7 @@ export class PostService{
     this.logger.log('Finding post');
     await this.findByIdOrThrow(id);
     this.logger.log('Deleting post');
-    await this.postRepository.deleteById(id);
+    await this.postRepository.delete({ id });
     this.logger.done();
   }
 
@@ -62,7 +64,8 @@ export class PostService{
     this.logger.log('Finding post');
     await this.findByIdOrThrow(id);
     this.logger.log('Updating post');
-    const post = await this.postRepository.update(id, req);
+    await this.postRepository.update(id, req);
+    const post = await this.findByIdOrThrow(id);
     this.logger.done();
     return post;
   }

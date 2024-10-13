@@ -1,4 +1,4 @@
-import { PostGroup } from '@prisma/client';
+import { PostGroup } from "../entities/post-group.entity";
 
 export class PostGroupResponseDto implements Partial<PostGroup> {
 

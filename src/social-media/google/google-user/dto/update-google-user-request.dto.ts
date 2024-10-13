@@ -1,5 +1,5 @@
-import { BearerToken } from "@prisma/client";
 import { IsArray, IsDate, IsEnum, IsOptional, IsString } from "class-validator";
+import { Token } from "src/common/enums/token.enums";
 
 export class  UpdateGoogleUserRequest {
 
@@ -8,9 +8,9 @@ export class  UpdateGoogleUserRequest {
   accessToken?: string;
 
   @IsString()
-  @IsEnum(BearerToken)
+  @IsEnum(Token)
   @IsOptional()
-  tokenType?: BearerToken;
+  tokenType?: Token;
   
   @IsDate()
   @IsOptional()

@@ -1,11 +1,11 @@
-import { Post } from '@prisma/client';
+import { Post } from "../entities/post.entity";
 
 export class PostResponseDto implements Partial<Post> {
 
   id: number;
   title: string;
-  description: string;
-  location: string;
+  description?: string;
+  location?: string;
   published?: boolean;
   tags?: string[];
   hashtags?: string[];

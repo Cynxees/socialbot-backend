@@ -1,16 +1,17 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
+import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
+import { AuthUserService } from './auth-user/auth-user.service';
 import { LoginRequestDto } from './dto/login-request.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
-import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service'; 
-import { User } from '@prisma/client';
-import * as bcrypt from 'bcrypt';
-import { AuthUserService } from './auth-user/auth-user.service';
+import { User } from 'src/user/entities/user.entity';
+
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: AuthUserService,
-    private jwtService: JwtService,
+    private readonly userService: AuthUserService,
+    private readonly jwtService: JwtService,
     private readonly logger: CustomLoggerService,
   ) {}
 
@@ -18,7 +19,7 @@ export class AuthService {
     this.logger.start();
     const user = await this.userService.findOneByUsername(username);
 
-    if (user && await bcrypt.compare(password, user.password)) {
+    if (user && (await bcrypt.compare(password, user.password))) {
       this.logger.done();
       return user;
     }
@@ -28,13 +29,18 @@ export class AuthService {
     throw new UnauthorizedException('Invalid Credentials');
   }
 
-  async login(req: LoginRequestDto) : Promise<LoginResponseDto> {
+  async login(req: LoginRequestDto): Promise<LoginResponseDto> {
     this.logger.start();
 
     this.logger.log('validating user');
     const user = await this.validateUser(req.username, req.password);
 
-    const payload = {id: user.id, username: user.username, role: user.role, googleUserId: user.googleUserId} as JwtUser;
+    const payload = {
+      id: user.id,
+      username: user.username,
+      role: user.role,
+      googleUserId: user.googleUserId,
+    } as JwtUser;
 
     const accessToken = this.jwtService.sign(payload);
     this.logger.debug(accessToken);
@@ -43,6 +49,6 @@ export class AuthService {
     this.logger.debug(JSON.stringify(res));
 
     this.logger.done();
-    return {accessToken};
+    return { accessToken };
   }
 }

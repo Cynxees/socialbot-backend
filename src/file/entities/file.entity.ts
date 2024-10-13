@@ -1,9 +1,7 @@
-import { $Enums, File } from "@prisma/client";
+import { MediaType } from 'src/common/enums/media-type.enums';
 
-export class FileEntity implements File {
-
+export class File {
   id: number;
   url: string;
-  mediaType: $Enums.MediaType;
-
+  mediaType: MediaType;
 }

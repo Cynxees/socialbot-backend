@@ -1,4 +1,5 @@
-import { IsString, IsNumber } from "class-validator";
+import { Transform } from "class-transformer";
+import { IsString, IsNumber, IsBoolean, IsBooleanString } from "class-validator";
 
 export class AppSchema {
   @IsString()
@@ -20,6 +21,10 @@ export class DatabaseSchema {
 
   @IsString()
   DATABASE_NAME: string
+
+  @Transform(({ value }) => value === 'true')
+  @IsBoolean()
+  DATABASE_MIGRATION_AUTO_RUN: boolean
 }
 
 export class SecretSchema {

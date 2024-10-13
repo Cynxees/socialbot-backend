@@ -1,31 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import {
-  ValidatorConstraint,
-  ValidatorConstraintInterface,
   ValidationArguments,
   ValidationOptions,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
   registerDecorator,
-  IsArray,
-  IsOptional,
-  IsString,
-  ArrayNotEmpty,
 } from 'class-validator';
-import { ValidatorEnum } from 'src/common/enums/common.enums';
-import { PostService } from '../post.service';
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
-import { PrismaService } from 'src/_infrastructure/prisma/prisma.service';
-import { Post } from '@prisma/client';
+import { ValidatorEnum } from 'src/common/enums/common.enums';
+import { Post } from '../entities/post.entity';
+import { PostService } from '../post.service';
 
 @Injectable()
 @ValidatorConstraint({ name: 'fileExists', async: true })
 export class FileExistsValidator implements ValidatorConstraintInterface {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor() {}
 
   async validate(fileId: number, args: ValidationArguments): Promise<boolean> {
-    const file = await this.prisma.file.findUnique({
-      where: { id: fileId },
-    });
-    return !!file;
+    //TODO: fix this
+    return true;
   }
 
   defaultMessage(args: ValidationArguments): string {
@@ -87,4 +80,3 @@ export function IsValidTag(validationOptions?: ValidationOptions) {
     });
   };
 }
-

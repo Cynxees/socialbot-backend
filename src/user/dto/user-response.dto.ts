@@ -1,4 +1,6 @@
-import { Role, User } from "@prisma/client";
+import { Role } from "src/common/enums/auth.enums";
+import { User } from "../entities/user.entity";
+
 export class UserResponseDto implements Partial<User>{
 
   createdAt: Date;

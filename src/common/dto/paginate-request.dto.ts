@@ -1,19 +1,18 @@
-import { Transform } from "class-transformer";
-import { IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
-import { SortOrderEnum } from "src/common/enums/common.enums";
+import { Transform } from 'class-transformer';
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import { SortOrderEnum } from 'src/common/enums/common.enums';
 
 /**
- * MUST ADD: 
+ * MUST ADD:
  * @IsEnum(UserSortEnum)
  * @IsOptional()
  * orderBy: UserSortEnum = UserSortEnum.ID;
- * 
+ *
  * @IsEnum(UserFilterEnum)
  * @IsOptional()
  * filterBy?: UserFilterEnum;
  */
 export class PaginateRequestDto {
-  
   @IsString()
   @IsOptional()
   orderBy?: string;
@@ -44,12 +43,10 @@ export class PaginateRequestDto {
   @IsOptional()
   @IsNumber()
   @IsOptional()
-  page?: number = 1;  // Default page number
+  page?: number = 1; // Default page number
 
   @Transform(({ value }) => parseInt(value, 10))
   @IsOptional()
   @IsNumber()
-  limit?: number = 10;  // Default limit per page
+  limit?: number = 10; // Default limit per page
 }
-
-

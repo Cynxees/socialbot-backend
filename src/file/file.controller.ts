@@ -1,17 +1,23 @@
-import { Controller, Post, UploadedFile, UseInterceptors, Query, Body } from '@nestjs/common';
-import { FileService } from './file.service';
+import {
+  Body,
+  Controller,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { MediaType } from 'src/common/enums/media-type.enums';
 import { FileResponseDto } from './dto/file-response.dto';
-import { MediaTypeEnum } from 'src/common/enums/media-type.enums';
+import { FileService } from './file.service';
 
 @Controller('file')
 @ApiTags('File')
 export class FileController {
   constructor(
     private readonly fileService: FileService,
-    private readonly logger: CustomLoggerService
+    private readonly logger: CustomLoggerService,
   ) {}
 
   @Post()
@@ -35,9 +41,8 @@ export class FileController {
   })
   async uploadFile(
     @UploadedFile('file') file: Express.Multer.File,
-    @Body('mediaType') mediaType: MediaTypeEnum // Add this line to capture mediaType from query params
+    @Body('mediaType') mediaType: MediaType, // Add this line to capture mediaType from query params
   ): Promise<FileResponseDto> {
-
     this.logger.start();
 
     const result = await this.fileService.uploadFile(file, mediaType); // Pass both file and mediaType
@@ -46,4 +51,3 @@ export class FileController {
     return result;
   }
 }
-
