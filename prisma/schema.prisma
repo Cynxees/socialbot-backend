@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = process.env.DATABASE_URL
+  url      = "postgresql://postgres:postgres@db:5432/socialbot?schema=public"
 }
 
 // USER
