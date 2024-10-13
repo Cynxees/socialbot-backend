@@ -1,94 +1,48 @@
-# syntax=docker/dockerfile:1
+###################
+# BUILD FOR LOCAL DEVELOPMENT
+###################
 
-###########################################
-# BASE IMAGE
-###########################################
-FROM node:20.16 AS base
+FROM node:18-alpine As development
 
 WORKDIR /usr/src/app
 
-# Set environment variables
-ENV HUSKY_SKIP_INSTALL=1
-ENV HUSKY=0
+COPY --chown=node:node package*.json ./
 
-###########################################
-# Install Project Dependencies
-###########################################
-FROM base AS install_deps
+RUN npm ci
 
-# Copy only the files required for installing dependencies
-COPY ./package.json ./package-lock.json ./
+COPY --chown=node:node . .
 
-# Install all package dependencies
-RUN npm install --frozen-lockfile
+USER node
 
-###########################################
-# Build App
-###########################################
-FROM base AS build
+###################
+# BUILD FOR PRODUCTION
+###################
 
-# Copy the entire project
-COPY . .
+FROM node:18-alpine As build
 
-# Copy installed dependencies from the previous stage
-COPY --from=install_deps /usr/src/app/node_modules ./node_modules
+WORKDIR /usr/src/app
 
-# Set the environment variable
-ENV NODE_ENV=production
+COPY --chown=node:node package*.json ./
 
-# Run the build command
+COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modules
+
+COPY --chown=node:node . .
+
 RUN npm run build
 
-###########################################
-# Typechecking
-###########################################
-FROM base AS typecheck
+ENV NODE_ENV production
 
-# Copy the entire project
-COPY . .
+RUN npm ci --only=production && npm cache clean --force
 
-# Copy installed dependencies from the install_deps stage
-COPY --from=install_deps /usr/src/app/node_modules ./node_modules
+USER node
 
-# Install vue-tsc globally
-RUN npm install -g vue-tsc
+###################
+# PRODUCTION
+###################
 
-# Run type checking
-RUN npm run typecheck
+FROM node:18-alpine As production
 
-###########################################
-# Development Image
-###########################################
-FROM base AS development
+COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
+COPY --chown=node:node --from=build /usr/src/app/dist ./dist
 
-# Copy the entire project
-COPY . .
-
-# Install git for npm install to work in development
-RUN apt-get update && apt-get install -y git && apt-get clean
-
-# Set the environment variable
-ENV NODE_ENV=development
-
-# Expose the application port (optional, modify as needed)
-# EXPOSE 3000
-
-# Command to run the application in development (modify as needed)
-CMD ["npm", "run", "start:dev"]
-
-###########################################
-# Production Image
-###########################################
-FROM base AS production
-
-# Set the environment variable
-ENV NODE_ENV=production
-
-# Copy the output from the build stage
-COPY --from=build /usr/src/app/dist .
-
-# Copy installed dependencies from the install_deps stage
-COPY --from=install_deps /usr/src/app/node_modules ./node_modules
-
-# Command to run the application (modify as needed)
-CMD ["npm", "start"]
+CMD [ "node", "dist/main.js" ]
