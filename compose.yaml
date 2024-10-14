@@ -27,12 +27,19 @@ services:
       NODE_ENV: development
     volumes:
       - .:/usr/src/app
+      - /usr/src/app/node_modules
     networks:
       - backend-network
 
 volumes:
   pgvolume:
     driver: local
+  node_modules:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./node_modules
 networks:
     backend-network:
       driver: bridge
