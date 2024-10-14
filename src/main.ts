@@ -31,10 +31,7 @@ async function bootstrap() {
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   const config = new DocumentBuilder()
-  .setTitle('THE SOCIAL BOT BACKEND API')
-  .setDescription(
-    'THIS IS THE ONE! THE SHIT AND NOT THE FART'
-  )
+  .setTitle('Socialbot API Documentation')
   .setVersion('1.0')
   .addBearerAuth()
   .build(); 
