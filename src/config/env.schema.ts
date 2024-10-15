@@ -1,5 +1,5 @@
-import { Transform } from "class-transformer";
-import { IsString, IsNumber, IsBoolean, IsBooleanString } from "class-validator";
+import { Transform } from 'class-transformer';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 export class AppSchema {
   @IsString()
@@ -7,28 +7,31 @@ export class AppSchema {
 }
 
 export class DatabaseSchema {
+  @IsString()
+  DATABASE_HOST: string;
 
-  @IsString()
-  DATABASE_URL: string;
-  
-  @IsString()
-  DATABASE_HOST: string
-  
   @IsNumber()
-  DATABASE_PORT: number
+  DATABASE_PORT: number;
 
   @IsString()
-  DATABASE_USERNAME: string
+  DATABASE_USERNAME: string;
 
   @IsString()
-  DATABASE_PASSWORD: string
+  DATABASE_PASSWORD: string;
 
   @IsString()
-  DATABASE_NAME: string
+  DATABASE_NAME: string;
 
   @Transform(({ value }) => value === 'true')
   @IsBoolean()
-  DATABASE_MIGRATION_AUTO_RUN: boolean
+  DATABASE_SSL_ENABLED: boolean;
+
+  @Transform(({ value }) => {
+    if (typeof value === 'boolean') return value;
+    return value === 'true';
+  })
+  @IsBoolean()
+  DATABASE_MIGRATION_AUTO_RUN: boolean;
 }
 
 export class SecretSchema {

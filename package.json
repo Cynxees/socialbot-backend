@@ -20,9 +20,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "db:migration:deploy": "",
     "db:migration:create": "cd ./src/_infrastructure/database/migration && typeorm migration:create",
-    "db:migration:run": "cd ./dist/src/_infrastructure/database && typeorm migration:run -d data.source.js",
-    "db:migration:down": "cd ./dist/src/_infrastructure/database && typeorm migration:revert -d data.source.js",
-    "db:migration:show": "cd ./dist/src/_infrastructure/database && typeorm migration:show -d data.source.js"
+    "db:migration:run": "cd ./dist/_infrastructure/database && typeorm migration:run -d data.source.js",
+    "db:migration:down": "cd ./dist/_infrastructure/database && typeorm migration:revert -d data.source.js",
+    "db:migration:show": "cd ./dist/_infrastructure/database && typeorm migration:show -d data.source.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.632.0",
@@ -45,6 +45,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "crypto": "^1.0.1",
+    "dayjs": "^1.11.13",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "facebook-nodejs-business-sdk": "^20.0.0",
@@ -56,7 +57,8 @@
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "swagger-typescript-api": "^13.0.22",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.20",
+    "typeorm-naming-strategy": "^2.0.10"
   },
   "devDependencies": {
     "@compodoc/compodoc": "^1.1.25",

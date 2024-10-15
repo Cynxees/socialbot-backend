@@ -3,38 +3,42 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigSchema } from 'src/config/config.schema';
 import { DataSource } from 'typeorm';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategy';
+import { LoggerModule } from '../logger/logger.module';
+import { CustomLoggerService } from '../logger/logger.service';
+import { datasourceOptions } from './data.source';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => {
+      imports: [ConfigModule, LoggerModule],
+      inject: [ConfigService, CustomLoggerService],
+      useFactory: async (
+        configService: ConfigService,
+        logger: CustomLoggerService,
+      ) => {
         const config =
           configService.getOrThrow<ConfigSchema['DATABASE']>('DATABASE');
 
         return {
-          type: 'postgres',
-          url: config.DATABASE_URL,
+          ...datasourceOptions,
           entities: ['dist/**/*.entity{.ts,.js}'],
-          migrations: [
-            'dist/src/_infrastructure/database/migration/*{.ts,.js}',
-          ],
-          synchronize: true,
+          migrations: ['dist/_infrastructure/database/migration/*{.ts,.js}'],
+          synchronize: false,
+          logger: 'advanced-console',
+          namingStrategy: new SnakeNamingStrategy(),
           autoLoadEntities: true,
           migrationsRun: config.DATABASE_MIGRATION_AUTO_RUN,
-          ssl: {
-            rejectUnauthorized: false,
-          },
         };
       },
+
       async dataSourceFactory(options) {
+        //TODO: remove this console.log
         console.log('options', options);
-        try{
-          
+        try {
           const datasource = new DataSource(options);
           return datasource;
-        }catch(err){
+        } catch (err) {
           console.error('failed when configuring datasource: ', err);
         }
       },

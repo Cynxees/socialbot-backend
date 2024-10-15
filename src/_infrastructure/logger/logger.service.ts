@@ -1,4 +1,5 @@
 import { Injectable, LoggerService } from '@nestjs/common';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class CustomLoggerService implements LoggerService {
@@ -36,7 +37,7 @@ export class CustomLoggerService implements LoggerService {
     }
   }
 
-  private getCallerInfo(step: number = 3): { className: string; methodName: string } {
+  private getCallerInfo(step: number = 4): { className: string; methodName: string } {
     const stack = new Error().stack;
     if (!stack) return { className: '', methodName: '' };
 
@@ -60,34 +61,37 @@ export class CustomLoggerService implements LoggerService {
     return `${color}${this.colors.reverse}${text}${this.colors.reset}${color}${spaces}`;
   }
 
-  log(message: any, ...optionalParams: any[]) {
+  private get currentTimestamp() {
+    return dayjs().format('MMM DD, HH:mm:ss');
+  }
+
+  private get logPrefix() {
     const { className, methodName } = this.getCallerInfo();
-    console.log(`${this.colors.fg.blue}[${className}.${methodName}] ${this.colorTag(this.colors.fg.cyan, 'LOG')} ${message}`, ...optionalParams, this.colors.reset);
+    return `${this.colors.fg.blue}[${this.currentTimestamp}] [${className}.${methodName}]`
+  }
+
+  log(message: any, ...optionalParams: any[]) {
+    console.log(`${this.logPrefix} ${this.colorTag(this.colors.fg.cyan, 'LOG')} ${message}`, ...optionalParams, this.colors.reset);
   }
 
   warn(message: any, ...optionalParams: any[]) {
-    const { className, methodName } = this.getCallerInfo();
-    console.log(`${this.colors.fg.blue}[${className}.${methodName}] ${this.colorTag(this.colors.fg.yellow, 'WARN')} ${message}`, ...optionalParams, this.colors.reset);
+    console.log(`${this.logPrefix} ${this.colorTag(this.colors.fg.yellow, 'WARN')} ${message}`, ...optionalParams, this.colors.reset);
   }
 
   error(message: any, ...optionalParams: any[]) {
-    const { className, methodName } = this.getCallerInfo();
-    console.log(`${this.colors.fg.blue}[${className}.${methodName}] ${this.colorTag(this.colors.fg.red, 'ERR')} ${message}`, ...optionalParams, this.colors.reset);
+    console.log(`${this.logPrefix} ${this.colorTag(this.colors.fg.red, 'ERR')} ${message}`, ...optionalParams, this.colors.reset);
   }
 
   debug(message: any, ...optionalParams: any[]) {
-    const { className, methodName } = this.getCallerInfo();
-    console.log(`${this.colors.fg.blue}[${className}.${methodName}] ${this.colorTag(this.colors.fg.grey, 'DEBUG')} ${message}`, ...optionalParams, this.colors.reset);
+    console.log(`${this.logPrefix} ${this.colorTag(this.colors.fg.grey, 'DEBUG')} ${message}`, ...optionalParams, this.colors.reset);
   }
 
   start(){
-    const { className, methodName } = this.getCallerInfo();
-    console.log(`${this.colors.fg.blue}[${className}.${methodName}] ${this.colorTag(this.colors.fg.cyan, 'LOG')} start`, this.colors.reset);
+    console.log(`${this.logPrefix} ${this.colorTag(this.colors.fg.cyan, 'LOG')} start`, this.colors.reset);
   }
 
   done() {
-    const { className, methodName } = this.getCallerInfo();
-    console.log(`${this.colors.fg.blue}[${className}.${methodName}] ${this.colorTag(this.colors.fg.cyan, 'LOG')} done`, this.colors.reset);
+    console.log(`${this.logPrefix} ${this.colorTag(this.colors.fg.cyan, 'LOG')} done`, this.colors.reset);
   }
 
   timeStart(label: string){
