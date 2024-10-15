@@ -22,13 +22,22 @@ export class DatabaseSchema {
   @IsString()
   DATABASE_NAME: string;
 
-  @Transform(({ value }) => value === 'true')
+  @Transform(() => {
+    const realValue = process.env.DATABASE_SSL_ENABLED;
+
+    if (typeof realValue === 'boolean') return realValue;
+
+    return realValue === 'true';
+  })
   @IsBoolean()
   DATABASE_SSL_ENABLED: boolean;
 
   @Transform(({ value }) => {
-    if (typeof value === 'boolean') return value;
-    return value === 'true';
+    const realValue = process.env.DATABASE_MIGRATION_AUTO_RUN;
+
+    if (typeof realValue === 'boolean') return realValue;
+
+    return realValue === 'true';
   })
   @IsBoolean()
   DATABASE_MIGRATION_AUTO_RUN: boolean;

@@ -1,54 +1,45 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class AddUserTable1728587052317 implements MigrationInterface {
+export class AddGoogleUserTable1728997771626 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'user',
+        name: 'googleUser',
         columns: [
           {
             name: 'id',
             type: 'int',
-            isUnique: true,
+            isPrimary: true,
             isGenerated: true,
+            isUnique: true,
             generationStrategy: 'increment',
           },
           {
-            name: 'username',
-            type: 'varchar',
-            isUnique: true,
-          },
-          {
-            name: 'displayName',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'password',
+            name: 'accessToken',
             type: 'varchar',
           },
           {
-            name: 'role',
+            name: 'refreshToken',
             type: 'varchar',
-            default: "'user'",
           },
           {
-            name: 'createdAt',
+            name: 'scopes',
+            type: 'varchar[]',
+          },
+          {
+            name: 'tokenType',
+            type: 'varchar',
+          },
+          {
+            name: 'expiresIn',
             type: 'timestamp',
-            default: 'CURRENT_TIMESTAMP',
-          },
-          {
-            name: 'updatedAt',
-            type: 'timestamp',
-            default: 'CURRENT_TIMESTAMP',
-            onUpdate: 'CURRENT_TIMESTAMP',
           },
         ],
-      }),
+      })
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('user');
+    await queryRunner.dropTable('googleUser');
   }
 }

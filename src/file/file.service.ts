@@ -22,11 +22,11 @@ export class FileService {
 
     this.logger.log('uploading to s3');
     const key = `post/${Date.now()}-${file.originalname}`;
-    const url = await this.storageService.uploadFile(key, file.buffer);
+    await this.storageService.uploadFile(key, file.buffer);
 
     this.logger.log('uploading file data to database');
     const result = this.fileRepository.create({
-      url,
+      key,
       mediaType,
     });
 
@@ -60,7 +60,7 @@ export class FileService {
     const file = await this.findOneOrThrow(fileId);
 
     this.logger.log('getting signed URL');
-    const signedUrl = await this.storageService.getSignedUrl(file.url, 3600);
+    const signedUrl = await this.storageService.getSignedUrl(file.key, 3600);
 
     this.logger.done();
     return signedUrl;
@@ -73,7 +73,7 @@ export class FileService {
     const file = await this.findOneOrThrow(fileId);
 
     this.logger.log('getting file object');
-    const fileObject = await this.storageService.getFile(file.url);
+    const fileObject = await this.storageService.getFile(file.key);
 
     this.logger.done();
     return fileObject;

@@ -39,6 +39,10 @@ export class StorageService {
     return key;
   }
 
+  /**
+   * TODO: return signed url
+   * @returns signed url 
+   */
   async uploadFile(key: string, fileBuffer: Buffer) : Promise<string> {
     this.logger.start()
     let path = key.split('/')
