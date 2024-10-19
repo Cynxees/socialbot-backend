@@ -1,25 +1,32 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Post } from '../post/entities/post.entity';
 
 @Entity()
 export class PostGroup {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  authorId: number;
-
-  @Column()
+  @Column({ nullable: false })
   scheduledDate: Date;
 
   @Column({ default: false })
   isPublished: boolean;
 
-  @Column("int", { array: true, default: [] })
-  fileIds: number[];
+  @Column({ nullable: false })
+  authorId: number;
 
-  @Column("int", { array: true })
-  postIds: number[];
+  @OneToOne(() => User)
+  @JoinColumn({ name: 'authorId' })
+  author: User;
 
-  @Column({ nullable: true })
-  musicId?: number;
+  @OneToMany(() => Post, (post) => post.postGroupId)
+  posts: Post[];
 }
