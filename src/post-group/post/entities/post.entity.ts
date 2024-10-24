@@ -6,7 +6,7 @@ export class Post {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: false })
   title: string;
 
   @Column({ nullable: true })
@@ -18,10 +18,13 @@ export class Post {
   @Column({ default: false })
   published: boolean;
 
-  @Column('simple-array', { default: [] })
+  @Column({ nullable: true  })
+  url: string;
+
+  @Column('text', { array: true })
   tags: string[];
 
-  @Column('simple-array', { default: [] })
+  @Column('text', { array: true })
   hashtags: string[];
 
   @Column({ nullable: true })

@@ -1,5 +1,12 @@
 import { Token } from 'src/common/enums/token.enums';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class GoogleUser {
@@ -12,7 +19,7 @@ export class GoogleUser {
   @Column()
   refreshToken: string;
 
-  @Column('simple-array')
+  @Column('text', { array: true })
   scopes: string[];
 
   @Column({
@@ -23,4 +30,11 @@ export class GoogleUser {
 
   @Column()
   expiresIn: Date;
+
+  @Column()
+  userId: number;
+
+  @OneToOne(() => User)
+  @JoinColumn()
+  user: User;
 }

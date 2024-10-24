@@ -7,5 +7,7 @@ export class PostGroupFileService {
   constructor(
     private readonly postGroupFileRepository: PostGroupFileRepository,
     private readonly logger: CustomLoggerService,
-  ) {}
+  ) {
+    
+  }
 }

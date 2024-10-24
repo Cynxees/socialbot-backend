@@ -1,6 +1,13 @@
 import { Role } from 'src/common/enums/auth.enums';
-import { GoogleUser } from '../../social-media/google/google-user/entities/google-user.entity';
-import { Column, CreateDateColumn, Entity, JoinColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { GoogleUser } from 'src/social-media/google/google-user/entities/google-user.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -8,7 +15,7 @@ export class User {
   id: number;
 
   @Column()
-  displayName: string;
+  displayName?: string;
 
   @Column({ unique: true })
   username: string;
@@ -25,9 +32,6 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column()
-  googleUserId: number;
-
-  @JoinColumn()
-  googleUser: GoogleUser;
+  @OneToOne(() => GoogleUser, (googleUser) => googleUser.user, { nullable: true })
+  googleUser?: GoogleUser;
 }

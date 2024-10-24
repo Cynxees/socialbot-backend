@@ -1,15 +1,16 @@
 import { Role } from "src/common/enums/auth.enums";
 import { User } from "../entities/user.entity";
+import { GoogleUser } from "src/social-media/google/google-user/entities/google-user.entity";
 
 export class UserResponseDto implements Partial<User>{
 
   createdAt: Date;
-  displayName: string;
+  displayName?: string;
   id: number;
   role: Role;
   updatedAt: Date;
   username: string;
-  googleUserId?: number;
+  googleUser?: GoogleUser;
 
   static removePassword(userObj: User) {
     return Object.fromEntries(

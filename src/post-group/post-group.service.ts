@@ -62,7 +62,6 @@ export class PostGroupService {
       authorId: updatePostGroupDto.authorId,
       scheduledDate: updatePostGroupDto.scheduledDate,
       isPublished: updatePostGroupDto.isPublished,
-      fileIds: updatePostGroupDto.fileIds,
     });
 
     const postGroup = await this.findById(id);

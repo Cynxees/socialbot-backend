@@ -2,10 +2,10 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { CustomLoggerService } from 'src/_infrastructure/logger/logger.service';
+import { User } from 'src/user/entities/user.entity';
 import { AuthUserService } from './auth-user/auth-user.service';
 import { LoginRequestDto } from './dto/login-request.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
-import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -39,7 +39,6 @@ export class AuthService {
       id: user.id,
       username: user.username,
       role: user.role,
-      googleUserId: user.googleUserId,
     } as JwtUser;
 
     const accessToken = this.jwtService.sign(payload);

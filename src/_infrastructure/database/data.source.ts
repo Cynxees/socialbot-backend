@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 import * as path from 'path';
 import 'reflect-metadata';
 import { DataSource, DataSourceOptions } from 'typeorm';
+import SnakeNamingStrategy from 'typeorm-naming-strategy';
 
 const migrations = path.resolve(__dirname + '/migration/**/*.js');
 

@@ -85,9 +85,7 @@ export class GoogleUserService {
 
     this.logger.log('getting google user');
     const user = await this.userService.findByIdOrThrow(jwtUser.id);
-    let googleUser = user.googleUserId
-      ? await this.googleUserRepository.findOne({where: {id: user.googleUserId}})
-      : null;
+    let googleUser = user.googleUser;
 
     const { authorizationCode, ...payload } = data;
     if (isEmpty(googleUser)) {
